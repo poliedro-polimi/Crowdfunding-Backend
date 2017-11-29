@@ -1,0 +1,2 @@
+recursive-include poliedro_donate/templates *
+recursive-include poliedro_donate/static *
