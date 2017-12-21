@@ -1,0 +1,49 @@
+# Translations template for PROJECT.
+# Copyright (C) 2017 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-12-18 14:44+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+
+#: poliedro_donate/templates/base.html:2 poliedro_donate/templates/base.html:43
+#: poliedro_donate/templates/base.html:50
+msgid "en"
+msgstr "it"
+
+#: poliedro_donate/templates/base.html:36
+msgid "Toggle navigation"
+msgstr "Commuta navigazione"
+
+#: poliedro_donate/templates/base.html:36
+msgid "Menu"
+msgstr ""
+
+#: poliedro_donate/templates/base.html:68
+msgid "PoliEdro Home"
+msgstr ""
+
+#: poliedro_donate/templates/index.html:8
+#: poliedro_donate/templates/index.html:13
+msgid "Support PoliEdro"
+msgstr "Supporta PoliEdro"
+
+#: poliedro_donate/templates/index.html:15
+msgid ""
+"Discover how to support our activities, including PoliMi Pride, and get "
+"our gadgets as a reward!"
+msgstr ""
+"Scopri come supportare le nostre iniziative, tra cui PoliMi Pride,"
+"e ottieni i nostri gadget!"
+
