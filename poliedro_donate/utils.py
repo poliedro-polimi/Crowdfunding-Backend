@@ -47,9 +47,9 @@ email_re = re.compile(
 
 
 def validate_donation_request(req):
-    float(req["donation"])
     validate_stretch_goal(req["stretch_goal"])
     validate_items(req["items"])
+    validate_donation(req["donation"], req["stretch_goal"], req["items"])
     validate_string(req["notes"])
     if req["stretch_goal"] > 0 or "reference" in req:
         validate_reference(req["reference"])
@@ -59,6 +59,16 @@ def validate_donation_request(req):
         validate_shirts(req["shirts"])
 
     return True
+
+
+def validate_donation(donation, stretch_goal, items):
+    float(donation)
+    min_price = STRETCH_GOAL_PRICES[stretch_goal] * items
+    if donation < min_price:
+        raise ValueError(
+            "Provided donation does not cover the purchase of the selected gadgets. Minimum: {} EUR for {} items of "
+            "type {}. Provided: {} EUR".format(
+                min_price, items, stretch_goal, donation))
 
 
 def validate_reference(ref):
@@ -114,6 +124,7 @@ def validate_execute_request(req):
     req["payerID"]
     req["paymentID"]
 
+
 def get_base_url():
     return (app.config["APP_SSL"] and "https://" or "http://") + \
-            app.config["APP_DOMAIN"] + app.config["APP_WEB_ROOT"]
+           app.config["APP_DOMAIN"] + app.config["APP_WEB_ROOT"]
