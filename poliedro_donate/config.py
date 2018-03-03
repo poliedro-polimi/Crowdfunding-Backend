@@ -13,3 +13,4 @@ class DefaultConfig(object):
     APP_DOMAIN = "poliedropolimi.pythonanywhere.com"
     APP_SSL = True
     APP_WEB_ROOT = ""
+    APP_MODE = "debug"

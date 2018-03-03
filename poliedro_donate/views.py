@@ -27,7 +27,7 @@ def paypal_create_payment():
 
     validate_donation_request(req)
 
-    if int(request.args.get("validate_only", 0)):
+    if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "debug":
         return jsonify({"success": "Provided JSON looks good"})
 
     payment_create_request = payments.PaymentCreateRequest()
@@ -70,7 +70,7 @@ def paypal_execute():
     req = request.json
     validate_execute_request(req)
 
-    if int(request.args.get("validate_only", 0)):
+    if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "debug":
         return jsonify({"success": "Provided JSON looks good"})
 
     payment_execute_request = payments.PaymentExecuteRequest(req["paymentID"])
