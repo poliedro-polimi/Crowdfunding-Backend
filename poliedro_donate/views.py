@@ -10,7 +10,9 @@ from werkzeug.exceptions import InternalServerError
 
 from .utils import validate_donation_request, validate_execute_request
 from . import app
-from .paypal import payments, pp_client
+from .paypal import pp_client
+
+import paypalrestsdk.v1.payments as payments
 
 @app.errorhandler(KeyError)
 @app.errorhandler(ValueError)
