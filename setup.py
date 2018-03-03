@@ -7,5 +7,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=['Flask', 'Flask-SQLAlchemy', 'paypalrestsdk==2.0.0rc1']
+    install_requires=['Flask', 'Flask-SQLAlchemy', 'paypalrestsdk==2.0.0rc1'],
+    dependency_links=[
+        "https://github.com/paypal/PayPal-Python-SDK/archive/2.0-beta.zip"
+    ]
 )
