@@ -21,7 +21,7 @@ def handle_invalid_usage(error):
     response.status_code = 400
     return response
 
-@app.route(app.config["APP_ROOT"] + '/paypal/create', methods=('POST',))
+@app.route(app.config["APP_WEB_ROOT"] + '/paypal/create', methods=('POST',))
 def paypal_create_payment():
     req = request.json
 
@@ -62,7 +62,7 @@ def paypal_create_payment():
     return jsonify({"paymentID": payment.id})
 
 
-@app.route(app.config["APP_ROOT"] + '/paypal/execute')
+@app.route(app.config["APP_WEB_ROOT"] + '/paypal/execute')
 def paypal_execute():
     req = request.json
     validate_execute_request(req)
@@ -90,10 +90,10 @@ def paypal_execute():
     })
 
 
-@app.route(app.config["APP_ROOT"] + '/paypal/cancel')
+@app.route(app.config["APP_WEB_ROOT"] + '/paypal/cancel')
 def paypal_cancel():
     return jsonify({"error": "This is a stub"})
 
-@app.route(app.config["APP_ROOT"] + '/paypal/return')
+@app.route(app.config["APP_WEB_ROOT"] + '/paypal/return')
 def paypal_return():
     return jsonify({"error": "This is a stub"})
