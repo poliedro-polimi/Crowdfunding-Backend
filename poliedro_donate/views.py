@@ -1,13 +1,97 @@
-from flask import render_template, redirect
+from __future__ import print_function
+from __future__ import print_function
 
-from . import app, get_locale
+import sys
+import traceback
+
+import braintreehttp
+from flask import request, jsonify, url_for
+from werkzeug.exceptions import InternalServerError
+
+from .utils import validate_donation_request, validate_execute_request
+from . import app
+from .paypal import payments, pp_client
+
+@app.errorhandler(KeyError)
+@app.errorhandler(ValueError)
+def handle_invalid_usage(error):
+    response = jsonify({"error": error.message})
+    response.status_code = 400
+    return response
+
+@app.route(app.config["APP_ROOT"] + '/paypal/create', methods=('POST',))
+def paypal_create_payment():
+    req = request.json
+
+    validate_donation_request(req)
+
+    payment_create_request = payments.PaymentCreateRequest()
+    payment_create_request.request_body({
+        "payer": {
+            "payment_method": "paypal"
+        },
+        "intent": "sale",
+        "transactions": [{
+            "amount": {
+                "total": str(req["donation"]),
+                "currency": "EUR"
+            }
+        }],
+        "redirect_urls": {
+            "cancel_url": url_for("paypal_cancel"),
+            "return_url": url_for("paypal_return")
+        }
+    })
+
+    try:
+        payment_create_response = pp_client.execute(payment_create_request)
+        payment = payment_create_response.result
+    except IOError as ioe:
+        if isinstance(ioe, braintreehttp.HttpError):
+            # Something went wrong server-side
+            print("Server error", file=sys.stderr)
+            print(ioe.status_code, file=sys.stderr)
+            print(ioe.headers["PayPal-Debug-Id"], file=sys.stderr)
+        else:
+            # Something went wrong client side
+            traceback.print_exc()
+        raise InternalServerError(jsonify({"error": "Server error"}))
+
+    return jsonify({"paymentID": payment.id})
 
 
-@app.route('/')
-def lang_redirect():
-    return redirect('/' + app.config['BABEL_DEFAULT_LOCALE'] + '/', code=301)
+@app.route(app.config["APP_ROOT"] + '/paypal/execute')
+def paypal_execute():
+    req = request.json
+    validate_execute_request(req)
+    payment_execute_request = payments.PaymentExecuteRequest(req["paymentID"])
+    payment_execute_request.request_body({
+        "payerID": req["payerID"]
+    })
+
+    try:
+        payment_execute_response = pp_client.execute(payment_execute_request)
+        result = payment_execute_response.result
+    except IOError as ioe:
+        if isinstance(ioe, braintreehttp.HttpError):
+            # Something went wrong server-side
+            print("Server error", file=sys.stderr)
+            print(ioe.status_code, file=sys.stderr)
+            print(ioe.headers["PayPal-Debug-Id"], file=sys.stderr)
+        else:
+            # Something went wrong client side
+            traceback.print_exc()
+        raise InternalServerError(jsonify({"error": "Server error"}))
+
+    return jsonify({
+        "result": result["state"]
+    })
 
 
-@app.route('/<lang_code>/')
-def index():
-    return render_template("index.html")
+@app.route(app.config["APP_ROOT"] + '/paypal/cancel')
+def paypal_cancel():
+    return jsonify({"error": "This is a stub"})
+
+@app.route(app.config["APP_ROOT"] + '/paypal/return')
+def paypal_return():
+    return jsonify({"error": "This is a stub"})

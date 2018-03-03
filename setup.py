@@ -7,5 +7,5 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=['Flask', 'Flask-SQLAlchemy', 'Flask-Babel']
+    install_requires=['Flask', 'Flask-SQLAlchemy', 'paypalrestsdk==2.0.0rc1']
 )
