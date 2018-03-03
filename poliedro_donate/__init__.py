@@ -1,6 +1,5 @@
-from flask import Flask, abort, g, request, session, Blueprint
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_babel import Babel
 
 from poliedro_donate.config import DefaultConfig
 
