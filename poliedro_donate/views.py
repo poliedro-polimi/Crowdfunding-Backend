@@ -27,6 +27,9 @@ def paypal_create_payment():
 
     validate_donation_request(req)
 
+    if int(request.args.get("validate_only", 0)):
+        return jsonify({"success": "Provided JSON looks good"})
+
     payment_create_request = payments.PaymentCreateRequest()
     payment_create_request.request_body({
         "payer": {
@@ -66,6 +69,10 @@ def paypal_create_payment():
 def paypal_execute():
     req = request.json
     validate_execute_request(req)
+
+    if int(request.args.get("validate_only", 0)):
+        return jsonify({"success": "Provided JSON looks good"})
+
     payment_execute_request = payments.PaymentExecuteRequest(req["paymentID"])
     payment_execute_request.request_body({
         "payerID": req["payerID"]
