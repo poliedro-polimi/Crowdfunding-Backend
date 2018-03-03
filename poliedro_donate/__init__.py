@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -5,7 +6,9 @@ from poliedro_donate.config import DefaultConfig
 
 app = Flask(__name__)
 app.config.from_object(DefaultConfig)
-app.config.from_envvar('POLIEDRO_DONATE_CONFIG')
+
+if 'POLIEDRO_DONATE_CONFIG' in os.environ:
+    app.config.from_envvar('POLIEDRO_DONATE_CONFIG')
 
 db = SQLAlchemy(app)
 # babel = Babel(app)
