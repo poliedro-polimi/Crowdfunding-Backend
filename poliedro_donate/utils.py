@@ -38,6 +38,9 @@ STRETCH_GOAL_PRICES = {
     3: 10.0
 }
 
+SHIRT_TYPES = ("tank-top", "t-shirt")
+SHIRT_SIZES = ("XS", "S", "M", "L", "XL", "XXL")
+
 if sys.version_info.major == 2:
     # noinspection PyShadowingBuiltins
     bytes = str
@@ -63,6 +66,7 @@ def validate_donation_request(req):
         validate_shirts(req["shirts"])
 
     return True
+
 
 def validate_lang(lang):
     if lang not in strings.LANGS:
