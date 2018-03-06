@@ -2,27 +2,27 @@ import re, sys
 
 """Sample JSON:
 {
-    "donation": 35,
-    "stretch_goal": 3,
-    "items": 3,
-    "shirts": [
-        {"size": "XS",  "type": "tank_top"},
-        {"size": "L",   "type": "t-shirt"},
-        {"size": "XXL", "type": "t-shirt"}
-    ],
-    "notes": "",
-    "reference": {
-        "firstname": "Davide",
-        "lastname":  "Depau",
-        "email":     "davide@depau.eu",
-        "phone":     "+393200000000",
-    }
+ "donation": 35,
+ "stretch_goal": 3,
+ "items": 3,
+ "shirts": [
+  {"size": "XS",  "type": "tank_top"},
+  {"size": "L",   "type": "t-shirt"},
+  {"size": "XXL", "type": "t-shirt"}
+ ],
+ "notes": "",
+ "reference": {
+  "firstname": "Davide",
+  "lastname": "Depau",
+  "email": "davide@depau.eu",
+  "phone": "+393200000000"
+ }
 }
 
 Solo donazione (reference opzionale)
 {
     "donation": 10,
-    "stetch_goal": 0,
+    "stretch_goal": 0,
     "items": 0,
     "notes": "Solo donazione, PoliEdro i migliori <3"
 }
