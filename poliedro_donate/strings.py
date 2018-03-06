@@ -17,7 +17,7 @@ _PP_ITEM_DESC_STRETCH_0 = {
 
 PP_ITEM_DESC = lambda lang, stretch_goal, qty: \
     _PP_ITEM_DESC_STRETCH_0[lang] if stretch_goal == 0 else \
-    _PP_ITEM_DESC[lang].format(qty=qty, item=_PP_ITEM_DESC[stretch_goal])
+    _PP_ITEM_DESC[lang].format(qty=qty, item=STRETCH_GOAL_NAMES[lang][stretch_goal])
 
 STRETCH_GOAL_NAMES = {
     "it": {
