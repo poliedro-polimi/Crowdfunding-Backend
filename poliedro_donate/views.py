@@ -17,13 +17,13 @@ import paypalrestsdk.v1.payments as payments
 @app.errorhandler(KeyError)
 @app.errorhandler(ValueError)
 def handle_invalid_usage(error):
-    response = jsonify({"error": error.message})
+    response = jsonify({"error": str(error)})
     response.status_code = 400
     return response
 
 @app.route(app.config["APP_WEB_ROOT"] + '/paypal/create', methods=('POST',))
 def paypal_create_payment():
-    req = request.json
+    req = request.get_json()
 
     validate_donation_request(req)
 
