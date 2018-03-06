@@ -74,7 +74,7 @@ def validate_donation(donation, stretch_goal, items):
 
 def validate_reference(ref):
     dict(ref)
-    validate_string(["firstname"])
+    validate_string(ref["firstname"])
     validate_string(ref["lastname"])
     validate_email(ref["email"])
     validate_string(ref["phone"])
