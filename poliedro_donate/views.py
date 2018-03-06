@@ -31,7 +31,7 @@ def paypal_create_payment():
         traceback.print_exc(file=sys.stderr)
         raise
 
-    if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "debug":
+    if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
 
     payment_create_request = payments.PaymentCreateRequest()
@@ -79,7 +79,7 @@ def paypal_execute():
         traceback.print_exc(file=sys.stderr)
         raise
 
-    if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "debug":
+    if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
 
     payment_execute_request = payments.PaymentExecuteRequest(req["paymentID"])
