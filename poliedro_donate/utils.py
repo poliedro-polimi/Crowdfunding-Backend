@@ -1,5 +1,7 @@
 import re, sys
 
+from poliedro_donate import strings
+
 """Sample JSON:
 {
  "donation": 35,
@@ -52,6 +54,7 @@ def validate_donation_request(req):
     validate_items(req["items"])
     validate_donation(req["donation"], req["stretch_goal"], req["items"])
     validate_string(req["notes"])
+    validate_lang(req["lang"])
     if req["stretch_goal"] > 0 or "reference" in req:
         validate_reference(req["reference"])
     if req["stretch_goal"] >= 3:
@@ -60,6 +63,10 @@ def validate_donation_request(req):
         validate_shirts(req["shirts"])
 
     return True
+
+def validate_lang(lang):
+    if lang not in strings.LANGS:
+        raise ValueError("Unsupported lang: {}".format(lang))
 
 
 def validate_donation(donation, stretch_goal, items):
@@ -121,9 +128,11 @@ def validate_string(string):
         raise ValueError("'{}' is not a string".format(string))
 
 
+# noinspection PyStatementEffect
 def validate_execute_request(req):
     req["payerID"]
     req["paymentID"]
+    validate_lang(req["lang"])
 
 
 def get_base_url():

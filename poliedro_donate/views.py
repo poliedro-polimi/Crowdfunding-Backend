@@ -8,6 +8,7 @@ import braintreehttp
 from flask import request, jsonify, url_for
 from werkzeug.exceptions import InternalServerError
 
+from poliedro_donate import strings
 from .utils import validate_donation_request, validate_execute_request
 from . import app
 from .paypal import pp_client
@@ -31,6 +32,8 @@ def paypal_create_payment():
         traceback.print_exc(file=sys.stderr)
         raise
 
+    lang = req["lang"]
+
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
 
@@ -44,6 +47,18 @@ def paypal_create_payment():
             "amount": {
                 "total": str(req["donation"]),
                 "currency": "EUR"
+            },
+            "item_list": {
+                "items": [
+                    {
+                        "quantity": "1",
+                        "name": strings.PP_ITEM_NAME[lang],
+                        "price": str(req["donation"]),
+                        "currency": "EUR",
+                        "description": strings.PP_ITEM_DESC(lang, req["stretch_goal"], req["items"]),
+                        "tax": "1"
+                    },
+                ]
             }
         }],
         "redirect_urls": {
