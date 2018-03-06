@@ -17,7 +17,7 @@ import paypalrestsdk.v1.payments as payments
 @app.errorhandler(KeyError)
 @app.errorhandler(ValueError)
 def handle_invalid_usage(error):
-    response = jsonify({"error": str(error)})
+    response = jsonify({"error": "{}: {}".format(error.__class__.__name__, str(error))})
     response.status_code = 400
     return response
 
