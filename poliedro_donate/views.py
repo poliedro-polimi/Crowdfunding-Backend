@@ -25,7 +25,11 @@ def handle_invalid_usage(error):
 def paypal_create_payment():
     req = request.get_json()
 
-    validate_donation_request(req)
+    try:
+        validate_donation_request(req)
+    except Exception:
+        traceback.print_exc(file=sys.stderr)
+        raise
 
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "debug":
         return jsonify({"success": "Provided JSON looks good"})
@@ -68,7 +72,12 @@ def paypal_create_payment():
 @app.route(app.config["APP_WEB_ROOT"] + '/paypal/execute')
 def paypal_execute():
     req = request.json
-    validate_execute_request(req)
+
+    try:
+        validate_execute_request(req)
+    except Exception:
+        traceback.print_exc(file=sys.stderr)
+        raise
 
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "debug":
         return jsonify({"success": "Provided JSON looks good"})
