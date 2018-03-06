@@ -64,7 +64,8 @@ def paypal_create_payment():
         "redirect_urls": {
             "cancel_url": url_for("paypal_cancel"),
             "return_url": url_for("paypal_return")
-        }
+        },
+        "description": strings.PP_ITEM_NAME[lang]
     })
 
     try:
