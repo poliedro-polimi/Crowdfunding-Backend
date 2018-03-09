@@ -11,3 +11,4 @@ class DefaultConfig(object):
     APP_SSL = True
     APP_WEB_ROOT = ""
     APP_MODE = "development"
+    APP_ENABLE_CORS = True
