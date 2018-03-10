@@ -17,7 +17,8 @@ from poliedro_donate import strings
   "firstname": "Davide",
   "lastname": "Depau",
   "email": "davide@depau.eu",
-  "phone": "+393200000000"
+  "phone": "+393200000000",
+  "location": "leonardo"
  }
 }
 
