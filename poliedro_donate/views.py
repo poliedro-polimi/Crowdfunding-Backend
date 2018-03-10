@@ -91,7 +91,7 @@ def paypal_create_payment():
     return jsonify({"paymentID": payment.id})
 
 
-@app.route(app.config["APP_WEB_ROOT"] + '/paypal/execute')
+@app.route(app.config["APP_WEB_ROOT"] + '/paypal/execute', methods=('POST',))
 def paypal_execute():
     req = request.json
 
