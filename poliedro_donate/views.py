@@ -74,9 +74,11 @@ def paypal_create_payment():
     except IOError as ioe:
         if isinstance(ioe, braintreehttp.HttpError):
             # Something went wrong server-side
-            print("Server error", file=sys.stderr)
+            print("\n---- PayPal error ----", file=sys.stderr)
             print(ioe.status_code, file=sys.stderr)
             print(ioe.headers["PayPal-Debug-Id"], file=sys.stderr)
+            print(ioe.message, file=sys.stderr)
+            print("----------------------\n", file=sys.stderr)
         else:
             # Something went wrong client side
             traceback.print_exc()
