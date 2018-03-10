@@ -62,4 +62,5 @@ db = SQLAlchemy(app)
 #         g.lang_code = session.lang_code
 
 
+from .errors import *
 from .views import *
