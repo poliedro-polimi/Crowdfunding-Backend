@@ -15,6 +15,29 @@ from .paypal import pp_client
 
 import paypalrestsdk.v1.payments as payments
 
+def show_paypal_error(ioe, body=None):
+    if isinstance(ioe, braintreehttp.HttpError):
+        # Something went wrong server-side
+        print("\n---- PayPal error ----", file=sys.stderr)
+        print(ioe.status_code, file=sys.stderr)
+        print(ioe.headers["PayPal-Debug-Id"], file=sys.stderr)
+        print(ioe.message, file=sys.stderr)
+
+        if body:
+            print ("--- Request body ----", file=sys.stderr)
+            print(body, file=sys.stderr)
+
+        print("----------------------\n", file=sys.stderr)
+    else:
+        # Something went wrong client side
+        traceback.print_exc()
+
+    response = jsonify({"error": "PayPal error"})
+    # https://pics.me.me/502-bad-gateway-nginx-0-7-67-502-bad-gateway-4364222.png
+    response.status_code = 502
+    return response
+
+
 @app.errorhandler(KeyError)
 @app.errorhandler(ValueError)
 def handle_invalid_usage(error):
@@ -37,8 +60,7 @@ def paypal_create_payment():
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
 
-    payment_create_request = payments.PaymentCreateRequest()
-    payment_create_request.request_body({
+    body = {
         "payer": {
             "payment_method": "paypal"
         },
@@ -48,45 +70,34 @@ def paypal_create_payment():
                 "total": str(req["donation"]),
                 "currency": "EUR"
             },
-            "item_list": {
-                "items": [
-                    {
-                        "quantity": "1",
-                        "name": strings.PP_ITEM_NAME[lang],
-                        "price": str(req["donation"]),
-                        "currency": "EUR",
-                        "description": strings.PP_ITEM_DESC(lang, req["stretch_goal"], req["items"]),
-                        "tax": "1"
-                    },
-                ]
-            }
+            "description": strings.PP_ITEM_NAME[lang] + " - " + strings.PP_ITEM_DESC(lang, req["stretch_goal"], req["items"])
+            # "item_list": {
+            #     "items": [
+            #         {
+            #             "quantity": "1",
+            #             "name": strings.PP_ITEM_NAME[lang],
+            #             "price": str(req["donation"]),
+            #             "currency": "EUR",
+            #             "description": strings.PP_ITEM_DESC(lang, req["stretch_goal"], req["items"]),
+            #             "tax": "1"
+            #         },
+            #     ]
+            # }
         }],
         "redirect_urls": {
             "cancel_url": url_for("paypal_cancel"),
             "return_url": url_for("paypal_return")
         },
-        "description": strings.PP_ITEM_NAME[lang]
-    })
+    }
+
+    payment_create_request = payments.PaymentCreateRequest()
+    payment_create_request.request_body(body)
 
     try:
         payment_create_response = pp_client.execute(payment_create_request)
         payment = payment_create_response.result
     except IOError as ioe:
-        if isinstance(ioe, braintreehttp.HttpError):
-            # Something went wrong server-side
-            print("\n---- PayPal error ----", file=sys.stderr)
-            print(ioe.status_code, file=sys.stderr)
-            print(ioe.headers["PayPal-Debug-Id"], file=sys.stderr)
-            print(ioe.message, file=sys.stderr)
-            print("----------------------\n", file=sys.stderr)
-        else:
-            # Something went wrong client side
-            traceback.print_exc()
-
-        response = jsonify({"error": "PayPal error"})
-        # https://pics.me.me/502-bad-gateway-nginx-0-7-67-502-bad-gateway-4364222.png
-        response.status_code = 502
-        return response
+        return show_paypal_error(ioe, body)
 
     return jsonify({"paymentID": payment.id})
 
@@ -104,27 +115,21 @@ def paypal_execute():
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
 
+    body = {
+        "payer_id": req["payerID"]
+    }
+
     payment_execute_request = payments.PaymentExecuteRequest(req["paymentID"])
-    payment_execute_request.request_body({
-        "payerID": req["payerID"]
-    })
+    payment_execute_request.request_body(body)
 
     try:
         payment_execute_response = pp_client.execute(payment_execute_request)
         result = payment_execute_response.result
     except IOError as ioe:
-        if isinstance(ioe, braintreehttp.HttpError):
-            # Something went wrong server-side
-            print("Server error", file=sys.stderr)
-            print(ioe.status_code, file=sys.stderr)
-            print(ioe.headers["PayPal-Debug-Id"], file=sys.stderr)
-        else:
-            # Something went wrong client side
-            traceback.print_exc()
-        raise InternalServerError(jsonify({"error": "Server error"}))
+        return show_paypal_error(ioe, body)
 
     return jsonify({
-        "result": result["state"]
+        "result": result.state
     })
 
 
