@@ -17,35 +17,30 @@ from .paypal import pp_client
 import paypalrestsdk.v1.payments as payments
 
 
-def show_paypal_error(ioe, body=None):
-    response = None
-    if isinstance(ioe, braintreehttp.HttpError):
-        # Something went wrong server-side
-        print("\n---- PayPal error ----", file=sys.stderr)
-        print(ioe.status_code, file=sys.stderr)
-        print(ioe.headers["PayPal-Debug-Id"], file=sys.stderr)
-        print(ioe.message, file=sys.stderr)
+@app.errorhandler(braintreehttp.HttpError)
+def handle_paypal_error(error):
+    print("\n---- PayPal error ----", file=sys.stderr)
+    print(error.status_code, file=sys.stderr)
+    print(error.headers["PayPal-Debug-Id"], file=sys.stderr)
+    print(error.message, file=sys.stderr)
 
-        if body:
-            print("--- Request body ----", file=sys.stderr)
-            print(body, file=sys.stderr)
+    body = getattr(error, "body", None)
 
-        print("----------------------\n", file=sys.stderr)
+    if body:
+        print("--- Request body ----", file=sys.stderr)
+        print(body, file=sys.stderr)
 
-        jerr = json.loads(ioe.message)
+    print("----------------------\n", file=sys.stderr)
 
-        if ioe.status_code == 403:
-            response = jsonify({"error": {
-                "type": jerr["name"],
-                "message": jerr["message"]
-            }})
-            response.status_code = 403
+    jerr = json.loads(error.message)
 
+    if error.status_code == 403:
+        response = jsonify({"error": {
+            "type": jerr["name"],
+            "message": jerr["message"]
+        }})
+        response.status_code = 403
     else:
-        # Something went wrong client side
-        traceback.print_exc()
-
-    if not response:
         response = jsonify({"error": {
             "type": "PAYPAL_ERROR",
             "message": "There was an error processing the payment. This error has been logged and we'll try to fix it as soon as possible. In the meantime, make sure your data is correct. Contact us at info@poliedro-polimi.it"
@@ -61,6 +56,14 @@ def show_paypal_error(ioe, body=None):
 def handle_invalid_usage(error):
     response = jsonify({"error": "{}: {}".format(error.__class__.__name__, str(error))})
     response.status_code = 400
+    return response
+
+
+@app.errorhandler(Exception)
+def handle_generic_exception(error):
+    traceback.print_exc(file=sys.stderr)
+    response = jsonify({"error": "500 Internal Server Error"})
+    response.status_code = 500
     return response
 
 
@@ -118,7 +121,8 @@ def paypal_create_payment():
         payment_create_response = pp_client.execute(payment_create_request)
         payment = payment_create_response.result
     except IOError as ioe:
-        return show_paypal_error(ioe, body)
+        ioe.body = body
+        raise
 
     return jsonify({"paymentID": payment.id})
 
@@ -147,7 +151,8 @@ def paypal_execute():
         payment_execute_response = pp_client.execute(payment_execute_request)
         result = payment_execute_response.result
     except IOError as ioe:
-        return show_paypal_error(ioe, body)
+        ioe.body = body
+        raise
 
     return jsonify({
         "result": result.state
