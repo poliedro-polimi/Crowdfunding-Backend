@@ -17,7 +17,7 @@ _PP_ITEM_DESC_STRETCH_0 = {
 
 PP_ITEM_DESC = lambda lang, stretch_goal, qty: \
     _PP_ITEM_DESC_STRETCH_0[lang] if stretch_goal == 0 else \
-    _PP_ITEM_DESC[lang].format(qty=qty, item=STRETCH_GOAL_NAMES[lang][stretch_goal])
+        _PP_ITEM_DESC[lang].format(qty=qty, item=STRETCH_GOAL_NAMES[lang][stretch_goal])
 
 STRETCH_GOAL_NAMES = {
     "it": {
@@ -33,4 +33,9 @@ STRETCH_GOAL_NAMES = {
         2: "PoliMi Pride shopper bag, pins and stickers",
         3: "PoliMi Pride Full Kit - shopper bag, pins, stickers, t-shirt/tank top"
     }
+}
+
+PP_NOTE_TO_PAYER = {
+    "it": "In caso di domande o ripensamenti, scrivi a info@poliedro-polimi.it",
+    "en": "If you have a question or change your mind, send an email to info@poliedro-polimi.it"
 }
