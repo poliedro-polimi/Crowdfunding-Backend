@@ -1,6 +1,7 @@
 from __future__ import print_function
 from __future__ import print_function
 
+import json
 import sys
 import traceback
 
@@ -15,7 +16,9 @@ from .paypal import pp_client
 
 import paypalrestsdk.v1.payments as payments
 
+
 def show_paypal_error(ioe, body=None):
+    response = None
     if isinstance(ioe, braintreehttp.HttpError):
         # Something went wrong server-side
         print("\n---- PayPal error ----", file=sys.stderr)
@@ -24,17 +27,32 @@ def show_paypal_error(ioe, body=None):
         print(ioe.message, file=sys.stderr)
 
         if body:
-            print ("--- Request body ----", file=sys.stderr)
+            print("--- Request body ----", file=sys.stderr)
             print(body, file=sys.stderr)
 
         print("----------------------\n", file=sys.stderr)
+
+        jerr = json.loads(ioe.message)
+
+        if ioe.status_code == 403:
+            response = jsonify({"error": {
+                "type": jerr["name"],
+                "message": jerr["message"]
+            }})
+            response.status_code = 403
+
     else:
         # Something went wrong client side
         traceback.print_exc()
 
-    response = jsonify({"error": "PayPal error"})
-    # https://pics.me.me/502-bad-gateway-nginx-0-7-67-502-bad-gateway-4364222.png
-    response.status_code = 502
+    if not response:
+        response = jsonify({"error": {
+            "type": "PAYPAL_ERROR",
+            "message": "There was an error processing the payment. This error has been logged and we'll try to fix it as soon as possible. In the meantime, make sure your data is correct. Contact us at info@poliedro-polimi.it"
+        }})
+        # https://pics.me.me/502-bad-gateway-nginx-0-7-67-502-bad-gateway-4364222.png
+        response.status_code = 502
+
     return response
 
 
@@ -44,6 +62,7 @@ def handle_invalid_usage(error):
     response = jsonify({"error": "{}: {}".format(error.__class__.__name__, str(error))})
     response.status_code = 400
     return response
+
 
 @app.route(app.config["APP_WEB_ROOT"] + '/paypal/create', methods=('POST',))
 def paypal_create_payment():
@@ -70,7 +89,8 @@ def paypal_create_payment():
                 "total": str(req["donation"]),
                 "currency": "EUR"
             },
-            "description": strings.PP_ITEM_NAME[lang] + " - " + strings.PP_ITEM_DESC(lang, req["stretch_goal"], req["items"])
+            "description": strings.PP_ITEM_NAME[lang] + " - " + strings.PP_ITEM_DESC(lang, req["stretch_goal"],
+                                                                                     req["items"])
             # "item_list": {
             #     "items": [
             #         {
@@ -137,6 +157,7 @@ def paypal_execute():
 @app.route(app.config["APP_WEB_ROOT"] + '/paypal/cancel')
 def paypal_cancel():
     return jsonify({"error": "This is a stub"})
+
 
 @app.route(app.config["APP_WEB_ROOT"] + '/paypal/return')
 def paypal_return():
