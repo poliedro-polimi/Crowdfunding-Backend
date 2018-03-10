@@ -107,7 +107,6 @@ def paypal_create_payment():
             #     ]
             # }
         }],
-        "note_to_payer": strings.PP_NOTE_TO_PAYER[lang],
         "redirect_urls": {
             "cancel_url": url_for("paypal_cancel"),
             "return_url": url_for("paypal_return")
