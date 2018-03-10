@@ -80,7 +80,11 @@ def paypal_create_payment():
         else:
             # Something went wrong client side
             traceback.print_exc()
-        raise InternalServerError(jsonify({"error": "Server error"}))
+
+        response = jsonify({"error": "PayPal error"})
+        # https://pics.me.me/502-bad-gateway-nginx-0-7-67-502-bad-gateway-4364222.png
+        response.status_code = 502
+        return response
 
     return jsonify({"paymentID": payment.id})
 
