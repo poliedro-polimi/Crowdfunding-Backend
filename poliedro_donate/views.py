@@ -1,17 +1,10 @@
 from __future__ import print_function
-from __future__ import print_function
 
-import json
-import sys
-import traceback
-
-import braintreehttp
+import sys, traceback
 from flask import request, jsonify, url_for
-from werkzeug.exceptions import InternalServerError
 
-from poliedro_donate import strings
+from . import app, strings
 from .utils import validate_donation_request, validate_execute_request
-from . import app
 from .paypal import pp_client
 
 import paypalrestsdk.v1.payments as payments
@@ -44,18 +37,6 @@ def paypal_create_payment():
             },
             "description": strings.PP_ITEM_NAME[lang] + " - " + strings.PP_ITEM_DESC(lang, req["stretch_goal"],
                                                                                      req["items"])
-            # "item_list": {
-            #     "items": [
-            #         {
-            #             "quantity": "1",
-            #             "name": strings.PP_ITEM_NAME[lang],
-            #             "price": str(req["donation"]),
-            #             "currency": "EUR",
-            #             "description": strings.PP_ITEM_DESC(lang, req["stretch_goal"], req["items"]),
-            #             "tax": "1"
-            #         },
-            #     ]
-            # }
         }],
         "redirect_urls": {
             "cancel_url": url_for("paypal_cancel"),
