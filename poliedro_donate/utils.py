@@ -42,6 +42,8 @@ STRETCH_GOAL_PRICES = {
 SHIRT_TYPES = ("tank-top", "t-shirt")
 SHIRT_SIZES = ("XS", "S", "M", "L", "XL", "XXL")
 
+LOCATIONS = ("leonardo", "bovisa")
+
 if sys.version_info.major == 2:
     # noinspection PyShadowingBuiltins
     bytes = str
@@ -91,6 +93,12 @@ def validate_reference(ref):
     validate_string(ref["lastname"], True)
     validate_email(ref["email"])
     validate_string(ref["phone"])
+    validate_location(ref["location"])
+
+
+def validate_location(loc):
+    if loc not in LOCATIONS:
+        raise ValueError("Invalid location: {}".format(loc))
 
 
 def validate_items(items):
