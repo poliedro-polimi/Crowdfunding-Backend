@@ -15,7 +15,5 @@ if app.config.get("APP_ENABLE_CORS", False):
 
     CORS(app)
 
-db = SQLAlchemy(app)
-
 from .errors import *
 from .views import *

@@ -1,6 +1,6 @@
 __all__ = ("User", "Shirt", "Transaction", "Donation")
 
-from . import db
+from .database import db
 
 
 class User(db.Model):
