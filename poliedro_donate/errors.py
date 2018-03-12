@@ -32,7 +32,7 @@ def handle_paypal_error(error):
         response.status_code = 403
     else:
         response = jsonify({"error": {
-            "type": "PAYPAL_ERROR",
+            "type": "_PAYPAL_ERROR",
             "message": "There was an error processing the payment. This error has been logged and we'll try to fix it as soon as possible. In the meantime, make sure your data is correct. Contact us at info@poliedro-polimi.it"
         }})
         # https://pics.me.me/502-bad-gateway-nginx-0-7-67-502-bad-gateway-4364222.png
@@ -44,7 +44,10 @@ def handle_paypal_error(error):
 @app.errorhandler(KeyError)
 @app.errorhandler(ValueError)
 def handle_invalid_usage(error):
-    response = jsonify({"error": "{}: {}".format(error.__class__.__name__, str(error))})
+    response = jsonify({"error": {
+        "type": "_VALIDATION_ERROR",
+        "message": "{}: {}".format(error.__class__.__name__, str(error))
+    }})
     response.status_code = 400
     return response
 
@@ -52,6 +55,9 @@ def handle_invalid_usage(error):
 @app.errorhandler(Exception)
 def handle_generic_exception(error):
     traceback.print_exc(file=sys.stderr)
-    response = jsonify({"error": "500 Internal Server Error"})
+    response = jsonify({"error": {
+        "type": "_APP_ERROR",
+        "message": "500 Internal Server Error"}
+    })
     response.status_code = 500
     return response
