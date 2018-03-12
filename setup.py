@@ -10,5 +10,6 @@ setup(
     install_requires=['Flask', 'Flask-SQLAlchemy', 'paypalrestsdk==2.0.0rc1', 'flask-cors'],
     dependency_links=[
         "https://github.com/paypal/PayPal-Python-SDK/archive/2.0-beta.zip"
-    ]
+    ],
+    test_requires=['pytest']
 )
