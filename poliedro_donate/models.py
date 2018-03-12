@@ -1,3 +1,5 @@
+__all__ = ("User", "Shirt", "Transaction", "Donation")
+
 from . import db
 
 
