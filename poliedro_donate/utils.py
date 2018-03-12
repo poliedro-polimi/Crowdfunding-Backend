@@ -132,7 +132,7 @@ def validate_email(email):
 def validate_string(string, not_empty=False):
     if not isinstance(string, bytes) and not isinstance(string, str):
         raise ValueError("'{}' is not a string".format(string))
-    if len(string) == 0:
+    if len(string) == 0 and not_empty:
         raise ValueError("Empty string")
 
 

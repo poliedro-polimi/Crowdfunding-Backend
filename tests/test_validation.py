@@ -97,7 +97,7 @@ def test_reference_wrong_location():
 def test_reference_name_empty():
     with pytest.raises(ValueError) as exc:
         validate_reference(REFERENCE_NAME_EMPTY)
-    assert "is an empty string" in str(exc)
+    assert "Empty string" in str(exc)
 
 
 def test_shirts_wrong_size():
