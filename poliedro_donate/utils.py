@@ -58,7 +58,8 @@ def validate_donation_request(req):
     validate_items(req["items"])
     validate_donation(req["donation"], req["stretch_goal"], req["items"])
     validate_string(req["notes"])
-    validate_lang(req["lang"])
+    if "lang" in req:
+        validate_lang(req["lang"])
     if req["stretch_goal"] > 0 or "reference" in req:
         validate_reference(req["reference"])
     if req["stretch_goal"] >= 3:
@@ -86,8 +87,8 @@ def validate_donation(donation, stretch_goal, items):
 
 def validate_reference(ref):
     dict(ref)
-    validate_string(ref["firstname"])
-    validate_string(ref["lastname"])
+    validate_string(ref["firstname"], True)
+    validate_string(ref["lastname"], True)
     validate_email(ref["email"])
     validate_string(ref["phone"])
 
@@ -128,9 +129,11 @@ def validate_email(email):
         raise ValueError("Email address is invalid")
 
 
-def validate_string(string):
+def validate_string(string, not_empty=False):
     if not isinstance(string, bytes) and not isinstance(string, str):
         raise ValueError("'{}' is not a string".format(string))
+    if len(string) == 0:
+        raise ValueError("Empty string")
 
 
 # noinspection PyStatementEffect

@@ -20,10 +20,14 @@ def paypal_create_payment():
         traceback.print_exc(file=sys.stderr)
         raise
 
-    lang = req["lang"]
+    if "lang" in req:
+        lang = req["lang"]
+    else:
+        lang = "en"
 
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
+
 
     body = {
         "payer": {
