@@ -9,7 +9,7 @@ Il back-end gestisce i pagamenti con PayPal e si occupa di memorizzare i dettagl
 
 Verrà hostato su PythonAnywhere ([poliedropolimi.pythonanywhere.com](https://poliedropolimi.pythonanywhere.com)).
 
-Il [front-end](/poliedro-polimi/Crowdfunding-Frontend) invece è scritto in PHP, verrà hostato sul servizio di web hosting già utilizzato da PoliEdro ([donate.poliedro-polimi.it](https://donate.poliedro-polimi.it)).
+Il [front-end](https://github.com/poliedro-polimi/Crowdfunding-Frontend) invece è scritto in PHP, verrà hostato sul servizio di web hosting già utilizzato da PoliEdro ([donate.poliedro-polimi.it](https://donate.poliedro-polimi.it)).
 
 Il back-end è scritto in Flask. Per eseguirlo in locale:
 
