@@ -34,3 +34,8 @@ export FLASK_DEBUG=1
 python -m poliedro_donate
 ```
 
+## Compatibilità
+
+Il software è scritto e viene testato su Python3 e PyPy3. La compatibilita con Python2 e PyPy non è garantita.
+
+In linea di massima è compatibile con tutti i sistemi operativi per i quali è disponibile Python3 e tutte le dipendenze richieste; tuttavia viene testato solo su Linux.
