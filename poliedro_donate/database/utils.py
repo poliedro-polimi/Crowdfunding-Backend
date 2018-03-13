@@ -37,7 +37,7 @@ def commit_on_success(func):
         except Exception:
             if db.session.dirty:
                 db.session.rollback()
-                raise
+            raise
         else:
             if db.session.dirty:
                 try:
