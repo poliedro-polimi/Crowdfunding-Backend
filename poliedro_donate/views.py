@@ -3,7 +3,7 @@ from __future__ import print_function
 import sys, traceback
 from flask import request, jsonify, url_for
 
-from . import app, strings
+from . import app, strings, database
 from .utils import validate_donation_request, validate_execute_request
 from .paypal import pp_client
 
@@ -28,6 +28,8 @@ def paypal_create_payment():
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
 
+    # Store request into database
+    database.register_donation(req)
 
     body = {
         "payer": {
@@ -73,6 +75,9 @@ def paypal_execute():
 
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
+
+    # Store payment execution into database
+    database.register_payment(req)
 
     body = {
         "payer_id": req["payerID"]
