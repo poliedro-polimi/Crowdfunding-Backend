@@ -70,6 +70,9 @@ def register_donation(req: dict, payment_id: str, payment_obj: dict) -> Donation
     db.session.add(t)
     db.session.add(donation)
 
+    # Ensure donation.id (primary key) is assigned
+    db.session.commit()
+
     if "shirts" in req:
         for s in req["shirts"]:
             dbs = Shirt(donation=donation, **(json2db_shirt(s)))
