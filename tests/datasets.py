@@ -38,7 +38,7 @@ JSON_SG3_GOOD = {
     "stretch_goal": 3,
     "items": 3,
     "shirts": [
-        {"size": "XS", "type": "tank_top"},
+        {"size": "XS", "type": "tank-top"},
         {"size": "L", "type": "t-shirt"},
         {"size": "XXL", "type": "t-shirt"}
     ],
@@ -85,7 +85,7 @@ JSON_SG3_SHIRTS_ITEMS_MISMATCH = {
     "stretch_goal": 3,
     "items": 5,
     "shirts": [
-        {"size": "XS", "type": "tank_top"},
+        {"size": "XS", "type": "tank-top"},
         {"size": "L", "type": "t-shirt"},
         {"size": "XXL", "type": "t-shirt"}
     ],
@@ -154,7 +154,7 @@ JSON_INVALID_LANG = {
     "stretch_goal": 3,
     "items": 3,
     "shirts": [
-        {"size": "XS", "type": "tank_top"},
+        {"size": "XS", "type": "tank-top"},
         {"size": "L", "type": "t-shirt"},
         {"size": "XXL", "type": "t-shirt"}
     ],
@@ -174,7 +174,7 @@ JSON_VALID_LANG = {
     "stretch_goal": 3,
     "items": 3,
     "shirts": [
-        {"size": "XS", "type": "tank_top"},
+        {"size": "XS", "type": "tank-top"},
         {"size": "L", "type": "t-shirt"},
         {"size": "XXL", "type": "t-shirt"}
     ],
@@ -214,13 +214,13 @@ REFERENCE_NAME_EMPTY = {
 }
 
 SHIRTS_WRONG_SIZE = [
-    {"size": "XXS", "type": "tank_top"},
+    {"size": "XXS", "type": "tank-top"},
     {"size": "Z", "type": "t-shirt"},
     {"size": "XXX", "type": "t-shirt"}
 ]
 
 SHIRTS_WRONG_TYPE = [
-    {"size": "XS", "type": "tank_top"},
+    {"size": "XS", "type": "tank-top"},
     {"size": "L", "type": "jockstrap"},
     {"size": "XXL", "type": "t-shirt"}
 ]
