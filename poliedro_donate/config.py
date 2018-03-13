@@ -12,3 +12,4 @@ class DefaultConfig(object):
     APP_WEB_ROOT = ""
     APP_MODE = "development"
     APP_ENABLE_CORS = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
