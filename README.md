@@ -1,6 +1,6 @@
 # Back-end per il sito di crowdfunding di PoliEdro 
 
-[![Build Status](https://travis-ci.org/poliedro-polimi/Crowdfunding-Backend.svg?branch=master)](https://travis-ci.org/poliedro-polimi/Crowdfunding-Backend) ![GitHub top language](https://img.shields.io/github/languages/top/poliedro-polimi/Crowdfunding-Backend.svg) [![license](https://img.shields.io/github/license/poliedro-polimi/Crowdfunding-Backend.svg)](https://github.com/poliedro-polimi/Crowdfunding-Backend/blob/master/LICENSE) [![Author Gayness](https://img.shields.io/badge/author%20gayness-100%25-ff69b4.svg)](https://github.com/Depau) 
+[![Build Status](https://travis-ci.org/poliedro-polimi/Crowdfunding-Backend.svg?branch=master)](https://travis-ci.org/poliedro-polimi/Crowdfunding-Backend) ![Language](https://img.shields.io/badge/language-python-blue.svg) ![Python versions](https://img.shields.io/badge/python-3.5%2C%203.6%2C%20pypy3-blue.svg) [![license](https://img.shields.io/github/license/poliedro-polimi/Crowdfunding-Backend.svg)](https://github.com/poliedro-polimi/Crowdfunding-Backend/blob/master/LICENSE) [![Author Gayness](https://img.shields.io/badge/author%20gayness-100%25-ff69b4.svg)](https://github.com/Depau) 
 
 
 
