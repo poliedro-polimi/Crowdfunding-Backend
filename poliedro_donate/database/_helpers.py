@@ -4,7 +4,7 @@ from ..validator import SHIRT_SIZES, SHIRT_TYPES
 
 def json2db_shirt(s: dict) -> dict:
     return {
-        "size": SHIRT_SIZES.index(s["size"]),
+        "size": SHIRT_SIZES.index(s["size"].upper()),
         "type": SHIRT_TYPES.index(s["type"])
     }
 
