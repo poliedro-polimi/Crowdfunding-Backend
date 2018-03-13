@@ -122,12 +122,12 @@ def validate_shirt(shirt):
 
 
 def validate_shirt_size(size):
-    if size.upper() not in ("XS", "S", "M", "L", "XL", "XXL"):
+    if size.upper() not in SHIRT_SIZES:
         raise ValueError("'{}' is not a valid shirt size".format(size))
 
 
 def validate_shirt_type(stype):
-    if stype not in ("tank_top", "t-shirt"):
+    if stype not in SHIRT_TYPES:
         raise ValueError("'{}' is not a valid shirt type".format(stype))
 
 
