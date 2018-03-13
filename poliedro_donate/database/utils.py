@@ -51,22 +51,22 @@ def commit_on_success(func):
 
 
 @commit_on_success
-def register_donation(json: dict, payment_id: str, payment_obj: AnyStr) -> Donation:
-    user = register_reference(json["reference"], lang=json["lang"])
-    t = Transaction(payment_id=payment_id, payment_obj=payment_obj)
+def register_donation(req: dict, payment_id: str, payment_obj: dict) -> Donation:
+    user = register_reference(req["reference"], lang=req["lang"])
+    t = Transaction(payment_id=payment_id, payment_obj=json.dumps(payment_obj))
     donation = Donation(
-        amount=json["donation"],
-        stretch_goal=json["stretch_goal"],
-        items=json["items"],
-        notes=json["notes"] if "notes" in json else "",
+        amount=req["donation"],
+        stretch_goal=req["stretch_goal"],
+        items=req["items"],
+        notes=req["notes"] if "notes" in req else "",
         reference=user,
         transaction=t
     )
     db.session.add(t)
     db.session.add(donation)
 
-    if "shirts" in json:
-        for s in json["shirts"]:
+    if "shirts" in req:
+        for s in req["shirts"]:
             dbs = Shirt(donation=donation, **(json2db_shirt(s)))
             db.session.add(dbs)
 

@@ -1,6 +1,5 @@
 from __future__ import print_function
 
-import json
 import sys, traceback
 from flask import request, jsonify, url_for
 
@@ -59,7 +58,7 @@ def paypal_create_payment():
         raise
 
     # Store request into database
-    database.register_donation(req, payment.id, json.dumps(body))
+    database.register_donation(req, payment.id, body)
 
     return jsonify({"paymentID": payment.id})
 
