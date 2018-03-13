@@ -54,7 +54,7 @@ def commit_on_success(func):
 @commit_on_success
 def register_donation(req: dict, payment_id: str, payment_obj: dict) -> Donation:
     if "reference" in req:
-        user = register_reference(req["reference"], lang=req["lang"])
+        user = register_reference(req["reference"], lang=req.get("lang", "en"))
     else:
         user = None
 
