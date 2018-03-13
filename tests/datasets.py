@@ -2,7 +2,7 @@ JSON_SG0_GOOD = {
     "donation": 10,
     "stretch_goal": 0,
     "items": 0,
-    "notes": "Solo donazione, PoliEdro i migliori <3"
+    "notes": "Solo donazione, PoliEdro i migliori <3",
 }
 
 JSON_SG1_GOOD = {
@@ -189,6 +189,14 @@ JSON_VALID_LANG = {
     "lang": "it"
 }
 
+REFERENCE_GOOD = {
+    "firstname": "Davide",
+    "lastname": "Depau",
+    "email": "email@domain.com",
+    "phone": "+393200000000",
+    "location": "bovisa"
+}
+
 REFERENCE_WRONG_LOCATION = {
     "firstname": "Davide",
     "lastname": "Depau",
@@ -224,3 +232,53 @@ SHIRTS_WRONG_TYPE = [
     {"size": "L", "type": "jockstrap"},
     {"size": "XXL", "type": "t-shirt"}
 ]
+
+SAMPLE_PAYMENT_ID = "PAY-0J356327TH335450NK56Y2PQ"
+SAMPLE_PAYER_ID = "3VWBNYXTUCXWY"
+
+SAMPLE_PAYMENT_OBJ = {
+    "payer": {
+        "payment_method": "paypal"
+    },
+    "intent": "sale",
+    "transactions": [{
+        "amount": {
+            "total": "10.0",
+            "currency": "EUR"
+        },
+        "description": "Sample payment"
+    }],
+    "redirect_urls": {
+        "cancel_url": "https://example.com/cancel",
+        "return_url": "https://example.com/return"
+    },
+}
+
+SAMPLE_PAYMENT_RESULT_OBJ = dest = type(str("Result"), (object,), {})
+SAMPLE_PAYMENT_RESULT_OBJ.state = "accepted"
+
+SAMPLE_PAYMENT_RESULT_DICT = {"state": "accepted"}
+
+
+def _random_string():
+    import uuid
+    return str(uuid.uuid4()).split("-")[-1]
+
+
+def gen_donation_jsons(n=100):
+    import random
+    for i in range(n):
+        sg = random.randint(0, 3)
+        d = globals()["JSON_SG{}_GOOD".format(sg)].copy()
+
+        for key in d:
+            if type(d[key]) == str:
+                d[key] = _random_string()
+
+        # Generate some duplicate references
+        if "reference" in d:
+            d["reference"] = REFERENCE_GOOD.copy()
+            if random.random() < 0.5:
+                d["reference"]["firstname"] = _random_string()
+
+        yield d, _random_string(), {"key": _random_string()}
