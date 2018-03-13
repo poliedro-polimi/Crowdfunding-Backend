@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import json
 import sys, traceback
 from flask import request, jsonify, url_for
 
@@ -27,9 +28,6 @@ def paypal_create_payment():
 
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
-
-    # Store request into database
-    database.register_donation(req)
 
     body = {
         "payer": {
@@ -60,6 +58,9 @@ def paypal_create_payment():
         ioe.body = body
         raise
 
+    # Store request into database
+    database.register_donation(req, payment.id, json.dumps(body))
+
     return jsonify({"paymentID": payment.id})
 
 
@@ -76,9 +77,6 @@ def paypal_execute():
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
 
-    # Store payment execution into database
-    database.register_payment(req)
-
     body = {
         "payer_id": req["payerID"]
     }
@@ -92,6 +90,9 @@ def paypal_execute():
     except IOError as ioe:
         ioe.body = body
         raise
+
+    # Store payment execution into database
+    database.register_transaction(req["paymentID"], req["payerID"], result, result.state)
 
     return jsonify({
         "result": result.state
