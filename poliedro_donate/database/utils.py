@@ -1,7 +1,7 @@
 import json
 import warnings
 from functools import wraps
-from typing import AnyStr, Union, cast
+from typing import AnyStr, cast
 
 from poliedro_donate.database import db
 from poliedro_donate.database._helpers import json2db_shirt, deconstruct_object
