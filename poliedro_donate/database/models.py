@@ -24,8 +24,8 @@ class Shirt(db.Model):
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     payment_id = db.Column(db.String(30), nullable=False)
-    state = db.Column(db.String(15), nullable=False)
-    payment_obj = db.Column(db.Text, nullable=False)
+    state = db.Column(db.String(15), nullable=True)
+    payment_obj = db.Column(db.Text, nullable=True)
 
 
 class Donation(db.Model):
