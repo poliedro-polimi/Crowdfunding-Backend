@@ -4,7 +4,9 @@ python:
   - "3.6"
   - "pypy3"
 install:
-  - pip install pytest
+  - pip install pytest coveralls
   - pip install .
 script:
   - pytest
+  - coverage run setup.py test
+after_success: coveralls
