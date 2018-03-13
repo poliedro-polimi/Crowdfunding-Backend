@@ -37,7 +37,7 @@ class Donation(db.Model):
     items = db.Column(db.Integer, nullable=False)
     notes = db.Column(db.Text, default="", nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     reference = db.relationship("User", backref=db.backref("donations", lazy=True, uselist=True))
 
     transaction_id = db.Column(db.Integer, db.ForeignKey("transaction.id"), nullable=True)
