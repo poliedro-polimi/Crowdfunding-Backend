@@ -12,5 +12,5 @@ setup(
         "https://github.com/paypal/PayPal-Python-SDK/archive/2.0-beta.zip"
     ],
     setup_requires=['pytest-runner'],
-    test_require=['pytest']
+    test_requires=['pytest']
 )
