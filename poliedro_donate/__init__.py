@@ -1,6 +1,5 @@
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 
 from poliedro_donate.config import DefaultConfig
 
