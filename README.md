@@ -1,4 +1,9 @@
-# Back-end per il sito di crowdfunding di PoliEdro
+# Back-end per il sito di crowdfunding di PoliEdro 
+
+[![Build Status](https://travis-ci.org/poliedro-polimi/Crowdfunding-Backend.svg?branch=master)](https://travis-ci.org/poliedro-polimi/Crowdfunding-Backend) ![GitHub top language](https://img.shields.io/github/languages/top/poliedro-polimi/Crowdfunding-Backend.svg) [![license](https://img.shields.io/github/license/poliedro-polimi/Crowdfunding-Backend.svg)](https://github.com/poliedro-polimi/Crowdfunding-Backend/blob/master/LICENSE) [![Author Gayness](https://img.shields.io/badge/author%20gayness-100%25-ff69b4.svg)](https://github.com/Depau) 
+
+
+
 
 Il back-end gestisce i pagamenti con PayPal e si occupa di memorizzare i dettagli delle donazioni e delle prenotazioni su un database.
 
