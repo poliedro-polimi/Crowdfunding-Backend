@@ -18,7 +18,9 @@ class Shirt(db.Model):
     type = db.Column(db.SmallInteger, nullable=False)
     size = db.Column(db.SmallInteger, nullable=False)
     donation_id = db.Column(db.Integer, db.ForeignKey("donation.id"), nullable=False)
-    donation = db.relationship("Donation", backref=db.backref("shirts", lazy=True, uselist=True))
+    donation = db.relationship("Donation",
+                               backref=db.backref("shirts", lazy=True, uselist=True, cascade='all, delete-orphan',
+                                                  single_parent=True))
 
 
 class Transaction(db.Model):
