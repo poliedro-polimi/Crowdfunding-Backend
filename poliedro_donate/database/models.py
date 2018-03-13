@@ -12,6 +12,11 @@ class User(db.Model):
     location = db.Column(db.String(10), nullable=False)
     lang = db.Column(db.String(2), default="en", nullable=False)
 
+    def __repr__(self):
+        return "<User {id}, firstname='{firstname}', lastname='{lastname}'>".format(id=self.id,
+                                                                                    firstname=self.firstname,
+                                                                                    lastname=self.lastname)
+
 
 class Shirt(db.Model):
     id = db.Column(db.Integer, primary_key=True)
