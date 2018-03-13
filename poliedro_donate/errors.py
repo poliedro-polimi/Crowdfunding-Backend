@@ -33,7 +33,7 @@ def handle_paypal_error(error):
     else:
         response = jsonify({"error": {
             "type": "_PAYPAL_ERROR",
-            "message": "There was an error processing the payment. This error has been logged and we'll try to fix it as soon as possible. In the meantime, make sure your data is correct. Contact us at info@poliedro-polimi.it"
+            "message": "There was an error processing the payment. This error has been logged and we'll try to fix it as soon as possible. In the meantime, make sure your data is correct. Please submit an issue at https://github.com/poliedro-polimi/Crowdfunding-Backend/issues"
         }})
         # https://pics.me.me/502-bad-gateway-nginx-0-7-67-502-bad-gateway-4364222.png
         response.status_code = 502
