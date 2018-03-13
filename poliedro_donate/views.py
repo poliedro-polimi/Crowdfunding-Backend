@@ -5,7 +5,7 @@ import sys, traceback
 from flask import request, jsonify, url_for
 
 from . import app, strings, database
-from .utils import validate_donation_request, validate_execute_request
+from .validator import validate_donation_request, validate_execute_request
 from .paypal import pp_client
 
 import paypalrestsdk.v1.payments as payments

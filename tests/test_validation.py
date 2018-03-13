@@ -1,6 +1,6 @@
 import pytest
 
-from poliedro_donate.utils import *
+from poliedro_donate.validator import *
 from .datasets import *
 
 
