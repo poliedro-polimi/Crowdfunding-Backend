@@ -9,6 +9,7 @@ from poliedro_donate.database import db
 from poliedro_donate.database._helpers import json2db_shirt, deconstruct_object
 from .models import *
 
+
 # JSON_SG3_GOOD = {
 #     "donation": 35,
 #     "stretch_goal": 3,
@@ -32,7 +33,6 @@ from .models import *
 # https://gist.github.com/yashh/14d12595f3dfa307a354
 def commit_on_success(func):
     def _commit_on_success(*args, **kw):
-        db = func.func_globals['db']
         try:
             res = func(*args, **kw)
         except Exception:
