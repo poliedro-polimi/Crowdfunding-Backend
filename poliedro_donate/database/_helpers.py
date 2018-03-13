@@ -1,5 +1,5 @@
-from poliedro_donate.database import Shirt
-from poliedro_donate.validator import SHIRT_SIZES, SHIRT_TYPES
+from .models import Shirt
+from ..validator import SHIRT_SIZES, SHIRT_TYPES
 
 
 def json2db_shirt(s: dict) -> dict:
