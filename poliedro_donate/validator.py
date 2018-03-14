@@ -2,35 +2,6 @@ import re, sys
 
 from poliedro_donate import strings
 
-"""Sample JSON:
-{
- "donation": 35,
- "stretch_goal": 3,
- "items": 3,
- "shirts": [
-  {"size": "XS",  "type": "tank_top"},
-  {"size": "L",   "type": "t-shirt"},
-  {"size": "XXL", "type": "t-shirt"}
- ],
- "notes": "",
- "reference": {
-  "firstname": "Davide",
-  "lastname": "Depau",
-  "email": "davide@depau.eu",
-  "phone": "+393200000000",
-  "location": "leonardo"
- }
-}
-
-Solo donazione (reference opzionale)
-{
-    "donation": 10,
-    "stretch_goal": 0,
-    "items": 0,
-    "notes": "Solo donazione, PoliEdro i migliori <3"
-}
-"""
-
 STRETCH_GOAL_PRICES = {
     0: 0.0,
     1: 2.0,
