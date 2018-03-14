@@ -44,7 +44,7 @@ def register_donation(req: dict, payment_id: str, payment_obj: dict) -> Donation
 
 @commit_on_success
 def register_transaction(payment_id: AnyStr, payer_id: AnyStr, result, state: AnyStr):
-    if type(result) != dict:
+    if not isinstance(result, dict):
         result = deconstruct_object(result)
 
     query = Transaction.query.filter_by(payment_id=payment_id)
