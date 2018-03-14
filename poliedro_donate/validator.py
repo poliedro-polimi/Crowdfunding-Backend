@@ -118,4 +118,5 @@ def validate_string(string, not_empty=False):
 def validate_execute_request(req):
     req["payerID"]
     req["paymentID"]
-    validate_lang(req["lang"])
+    if "lang" in req:
+        validate_lang(req["lang"])
