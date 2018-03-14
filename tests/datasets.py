@@ -275,7 +275,7 @@ def _random_string():
     return str(uuid.uuid4()).split("-")[-1]
 
 
-def gen_donation_jsons(n=100):
+def gen_donation_jsons(n=50):
     import random
     for i in range(n):
         sg = random.randint(0, 3)
