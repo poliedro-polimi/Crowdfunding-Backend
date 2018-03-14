@@ -91,7 +91,7 @@ def register_transaction(payment_id: AnyStr, payer_id: AnyStr, result, state: An
 
     t.payer_id = payer_id
     t.state = state
-    t.payment_obj = json.dumps(result)
+    t.result_obj = json.dumps(result)
 
 
 def register_reference(json: dict, lang: AnyStr) -> User:
