@@ -16,6 +16,11 @@ from .datasets import *
 def create_db():
     # Ensure we're not deleting production db
     assert app.config["APP_MODE"] == "development"
+    yield
+
+
+@pytest.fixture(autouse=True)
+def setup_cleanup_tests():
     db.reflect()
     db.drop_all()
     db.create_all()
@@ -97,6 +102,22 @@ def _check_register_donation(req, payment_id, payment_obj, sg):
     db.session.commit()
 
 
+def _check_register_transaction(donation_req, payment_id, payment_obj, payer_id, result_obj, result_dict):
+    d = register_donation(donation_req, payment_id, payment_obj)
+    register_transaction(payment_id, payer_id, result_obj, result_obj.state)
+
+    tq = Transaction.query.filter_by(payment_id=payment_id)
+    assert tq.count() == 1
+
+    t = tq[0]
+
+    _check_donation(d, donation_req)
+    _check_transaction(t, payment_id, payment_obj, payer_id, result_obj.state, result_dict)
+
+    db.session.delete(t)
+    db.session.delete(d)
+
+
 def test_create_sg0_good():
     _check_register_donation(JSON_SG0_GOOD, SAMPLE_PAYMENT_ID, SAMPLE_PAYMENT_OBJ, 0)
 
@@ -163,3 +184,8 @@ def test_create_many():
 
     # Shirts should have been cascade-deleted
     assert len(Shirt.query.all()) == 0
+
+
+def test_payment_execute():
+    _check_register_transaction(JSON_SG3_GOOD, SAMPLE_PAYMENT_ID, SAMPLE_PAYMENT_OBJ, SAMPLE_PAYER_ID,
+                                SAMPLE_PAYMENT_RESULT_OBJ, SAMPLE_PAYMENT_RESULT_DICT)
