@@ -4,7 +4,7 @@ python:
   - "3.6"
   - "pypy3"
 install:
-  - pip install pytest coveralls
+  - pip install pytest pytest-flask pytest-runner coveralls
   - pip install .
 script:
   - pytest
