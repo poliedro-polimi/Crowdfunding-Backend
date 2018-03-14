@@ -272,7 +272,7 @@ def gen_donation_jsons(n=100):
         d = globals()["JSON_SG{}_GOOD".format(sg)].copy()
 
         for key in d:
-            if type(d[key]) == str:
+            if isinstance(d[key], str):
                 d[key] = _random_string()
 
         # Generate some duplicate references
