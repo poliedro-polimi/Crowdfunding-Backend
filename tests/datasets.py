@@ -236,6 +236,16 @@ SHIRTS_WRONG_TYPE = [
 SAMPLE_PAYMENT_ID = "PAY-0J356327TH335450NK56Y2PQ"
 SAMPLE_PAYER_ID = "3VWBNYXTUCXWY"
 
+JSON_EXECUTE_PAYMENT_GOOD = {
+    "paymentID": SAMPLE_PAYMENT_ID,
+    "payerID": SAMPLE_PAYER_ID
+}
+
+JSON_EXECUTE_PAYMENT_BAD = {
+    "paymentID": SAMPLE_PAYMENT_ID,
+    "involtini_primavera": None
+}
+
 SAMPLE_PAYMENT_OBJ = {
     "payer": {
         "payment_method": "paypal"

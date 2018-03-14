@@ -64,7 +64,7 @@ def paypal_create_payment():
 
 
 @app.route(app.config["APP_WEB_ROOT"] + '/paypal/execute', methods=('POST',))
-def paypal_execute():
+def paypal_execute_payment():
     req = request.json
 
     try:
