@@ -14,5 +14,6 @@ if app.config.get("APP_ENABLE_CORS", False):
 
     CORS(app)
 
+from .cli import *
 from .errors import *
 from .views import *
