@@ -91,7 +91,7 @@ def paypal_execute():
         raise
 
     # Store payment execution into database
-    database.register_transaction(req["paymentID"], req["payerID"], result, result.state)
+    poliedro_donate.database.database.register_transaction(req["paymentID"], req["payerID"], result, result.state)
 
     return jsonify({
         "result": result.state

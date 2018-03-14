@@ -5,8 +5,8 @@ from typing import cast
 
 from poliedro_donate import app
 from poliedro_donate.database import db
-from poliedro_donate.database._helpers import db2json_shirt, json2db_shirt
-from poliedro_donate.database.utils import *
+from poliedro_donate.database.helpers import json2db_shirt, db2json_shirt
+from poliedro_donate.database.database import register_donation, register_transaction, register_reference
 from poliedro_donate.database.models import *
 
 from .datasets import *
