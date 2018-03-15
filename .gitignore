@@ -108,3 +108,6 @@ venv.bak/
 debugcfg.py
 
 .idea
+
+pypyvenv/
+.pytest_cache/
