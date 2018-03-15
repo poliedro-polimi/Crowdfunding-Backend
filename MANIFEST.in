@@ -1,0 +1,3 @@
+recursive-include poliedro_donate/templates *
+recursive-include poliedro_donate/static *
+recursive-include poliedro_donate/translations *
