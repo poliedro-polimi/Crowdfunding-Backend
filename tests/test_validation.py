@@ -4,6 +4,18 @@ from poliedro_donate.validator import *
 from .datasets import *
 
 
+def test_invalid_create_request():
+    with pytest.raises(ValueError) as exc:
+        validate_donation_request("culo")
+    assert "Invalid request" in str(exc)
+
+
+def test_invalid_execute_request():
+    with pytest.raises(ValueError) as exc:
+        validate_execute_request("culo")
+    assert "Invalid request" in str(exc)
+
+
 def test_sg0_good():
     validate_donation_request(JSON_SG0_GOOD)
 

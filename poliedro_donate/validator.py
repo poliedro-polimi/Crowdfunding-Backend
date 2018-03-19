@@ -26,6 +26,8 @@ email_re = re.compile(
 
 
 def validate_donation_request(req):
+    if not isinstance(req, dict):
+        raise ValueError("Invalid request")
     validate_stretch_goal(req["stretch_goal"])
     validate_items(req["items"])
     validate_donation(req["donation"], req["stretch_goal"], req["items"])
@@ -116,6 +118,8 @@ def validate_string(string, not_empty=False):
 
 # noinspection PyStatementEffect
 def validate_execute_request(req):
+    if not isinstance(req, dict):
+        raise ValueError("Invalid request")
     req["payerID"]
     req["paymentID"]
     if "lang" in req:
