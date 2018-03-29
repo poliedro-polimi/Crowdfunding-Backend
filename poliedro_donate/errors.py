@@ -44,10 +44,15 @@ def handle_paypal_error(error):
 @app.errorhandler(KeyError)
 @app.errorhandler(ValueError)
 def handle_invalid_usage(error):
-    response = jsonify({"error": {
+    ejson = {"error": {
         "type": "_VALIDATION_ERROR",
         "message": "{}: {}".format(error.__class__.__name__, str(error))
-    }})
+    }}
+
+    if getattr(error, "edesc", None):
+        ejson["error"]["desc"] = error.edesc
+
+    response = jsonify(ejson)
     response.status_code = 400
     return response
 
