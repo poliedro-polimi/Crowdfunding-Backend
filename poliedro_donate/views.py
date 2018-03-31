@@ -71,7 +71,7 @@ def paypal_create_payment():
         database.add_transaction_details(donation, payment.id, body)
 
         return jsonify({
-            "paymentID": payment.id,
+            "payment_id": payment.id,
             "donation_id": donation.pretty_id
         })
 
