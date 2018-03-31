@@ -1,13 +1,12 @@
 from __future__ import print_function
 
 import sys, traceback
-from typing import cast
-
 import braintreehttp
 from flask import request, jsonify, url_for
-from poliedro_donate.database.models import Transaction
+
 
 from . import app, strings, database
+from .database.models import Transaction
 from .validator import validate_donation_request, validate_execute_request
 from .paypal import pp_client
 from .errors import DonationError
@@ -36,6 +35,7 @@ def paypal_create_payment():
     # Store request into database
     donation = database.register_donation(req)
 
+    import pdb; pdb.set_trace()
     try:
         body = {
             "payer": {
@@ -49,7 +49,8 @@ def paypal_create_payment():
                 },
                 "description": strings.PP_ITEM_NAME[lang] + " - " + strings.PP_ITEM_DESC(lang, req["stretch_goal"],
                                                                                          req[
-                                                                                             "items"]) + " (id: {})".format(donation.pretty_id)
+                                                                                             "items"]) + " (id: {})".format(
+                    donation.pretty_id)
             }],
             "redirect_urls": {
                 "cancel_url": url_for("paypal_cancel"),
