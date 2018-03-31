@@ -1,15 +1,16 @@
 from __future__ import print_function
 
 import sys, traceback
+import warnings
 import braintreehttp
 from flask import request, jsonify, url_for
 
-
-from . import app, strings, database
+from . import app, strings, database, mail
 from .database.models import Transaction
 from .validator import validate_donation_request, validate_execute_request
 from .paypal import pp_client
 from .errors import DonationError
+from .utils import get_paypal_email
 
 import paypalrestsdk.v1.payments as payments
 
@@ -35,7 +36,6 @@ def paypal_create_payment():
     # Store request into database
     donation = database.register_donation(req)
 
-    import pdb; pdb.set_trace()
     try:
         body = {
             "payer": {
@@ -117,6 +117,30 @@ def paypal_execute_payment():
 
         # Store payment execution into database
         database.register_transaction(req["paymentID"], req["payerID"], jresult, jresult["state"])
+
+        # Send confirmation email
+        to_addrs = []
+        if donation.reference:
+            to_addrs.append(donation.reference.email)
+
+        paypal_addr = get_paypal_email(jresult)
+        if paypal_addr:
+            to_addrs.append(paypal_addr)
+
+        lang = "en"
+        if "lang" in req:
+            lang = req["lang"]
+        elif donation.reference and donation.reference.lang:
+            lang = donation.reference.lang
+
+        if len(to_addrs) == 0:
+            warnings.warn("User has no email address! Donation ID: {}".format(donation.pretty_id))
+        else:
+            try:
+                mail.send_confirmation_email(to_addrs, donation, lang)
+            except mail.MailerError as e:
+                app.log_exception(e)
+                app.log_exception(DonationError(donation, e))
 
         return jsonify({
             "result": jresult["state"],
