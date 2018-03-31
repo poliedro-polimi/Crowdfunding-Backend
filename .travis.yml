@@ -6,6 +6,7 @@ python:
 install:
   - pip install pytest pytest-flask pytest-runner coveralls
   - pip install .
+  - pip install https://github.com/Depau/braintreehttp_python-noparseresponse/archive/master.zip
 script:
   - pytest
   - coverage run --source=poliedro_donate setup.py test

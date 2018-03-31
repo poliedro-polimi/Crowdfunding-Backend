@@ -22,7 +22,12 @@ source poliedro_venv/bin/activate
 ### 2. Installazione
 ```shell
 pip install --upgrade https://github.com/poliedro-polimi/Crowdfunding-Backend/archive/master.zip
+pip install https://github.com/Depau/braintreehttp_python-noparseresponse/archive/master.zip
 ```
+
+**Nota:** il software utilizza una [versione modificata](https://github.com/Depau/braintreehttp_python-noparseresponse/) di [BrainTreeHTTP](https://github.com/braintree/braintreehttp_python) le cui modifiche non sono state ancora accettate *upstream*. È necessario reinstallarla ogni qual volta `braintreehttp` venga aggiornato, in modo da sovrascriverlo.
+
+Questo non è ottimale, troverò un modo migliore per risolvere questo problema.
 
 ##### Modalità development
 
