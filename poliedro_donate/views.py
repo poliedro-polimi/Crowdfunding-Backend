@@ -3,7 +3,7 @@ from __future__ import print_function
 import sys, traceback
 import warnings
 import braintreehttp
-from flask import request, jsonify, url_for
+from flask import request, jsonify, url_for, g
 
 from . import app, strings, database, mail
 from .database.models import Transaction
@@ -29,6 +29,7 @@ def paypal_create_payment():
         lang = req["lang"]
     else:
         lang = "en"
+    g.lang = lang
 
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
