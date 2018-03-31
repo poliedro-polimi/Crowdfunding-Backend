@@ -1,0 +1,150 @@
+# Translations template for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1\n"
+"Report-Msgid-Bugs-To: info@poliedro-polimi.it\n"
+"POT-Creation-Date: 2018-04-01 01:18+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.3\n"
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:5
+msgid "Donation confirmation email"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:29
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:4
+msgid "Hello"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:30
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:5
+msgid "Thanks for your donation!"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:33
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:6
+msgid "These are your donation details, for your records."
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:38
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:9
+msgid ""
+"IMPORTANT: You asked for a gadget reservation. Print or show this email "
+"when picking them up."
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:42
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:12
+msgid "Donation ID"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:45
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:13
+msgid "Amount"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:47
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:14
+msgid "Notes"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:53
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:15
+msgid "Reference"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:55
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:16
+msgid "First name"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:56
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:17
+msgid "Last name"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:57
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:18
+msgid "E-mail"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:58
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:19
+msgid "Phone"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:64
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:21
+msgid "Reserved gadget"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:65
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:22
+msgid "Quantity"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:66
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:23
+msgid "Pick up campus"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:72
+msgid "Shirt type"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:73
+msgid "Size"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:87
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:30
+msgid ""
+"You can pick up your gadgets at Politecnico di Milano in {campus} campus "
+"at our stands during Milano Pride Week."
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:90
+msgid ""
+"Follow our <a href='https://t.me/PoliEdroLive'>Telegram channel</a> and "
+"our <a href='https://instagram.com/poliedro.polimi'>Instagram page</a> to"
+" stay up to date with pick up dates and exact locations."
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:95
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:34
+msgid "For any questions you can reply to this email to contact us."
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:99
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:36
+msgid "Have a nice day"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/html.jinja2:100
+msgid "-- PoliEdro's <a href='https://github.com/poliedro-polimi'>IT team</a> ;)"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:26
+msgid "Shirts"
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:31
+msgid ""
+"Follow our Telegram channel [1] and our Instagram page [2] to stay up to "
+"date with pick up dates and exact locations."
+msgstr ""
+
+#: poliedro_donate/templates/emails/confirmation/plaintext.jinja2:37
+msgid "-- PoliEdro's IT team ;)"
+msgstr ""
+
