@@ -1,7 +1,8 @@
-__all__ = ("db", "register_donation", "register_transaction", "register_reference")
+__all__ = ("db", "register_donation", "register_transaction", "register_reference", "add_transaction_details")
 
 from .. import app
 from flask_sqlalchemy import SQLAlchemy
+
 db = SQLAlchemy(app)
 
 import json
@@ -13,13 +14,14 @@ from .models import Donation, Transaction, Shirt, User
 
 
 @commit_on_success
-def register_donation(req: dict, payment_id: str, payment_obj: dict) -> Donation:
+def register_donation(req: dict, payment_id: str = None, payment_obj: dict = None) -> Donation:
     if "reference" in req:
         user = register_reference(req["reference"], lang=req.get("lang", "en"))
     else:
         user = None
 
-    t = Transaction(payment_id=payment_id, payment_obj=json.dumps(payment_obj))
+    t = Transaction(payment_id=payment_id if payment_id else None,
+                    payment_obj=json.dumps(payment_obj) if payment_obj else None)
     donation = Donation(
         amount=req["donation"],
         stretch_goal=req["stretch_goal"],
@@ -40,6 +42,12 @@ def register_donation(req: dict, payment_id: str, payment_obj: dict) -> Donation
             db.session.add(dbs)
 
     return donation
+
+
+@commit_on_success
+def add_transaction_details(d: Donation, payment_id: str, payment_obj: dict):
+    d.transaction.payment_id = payment_id
+    d.transaction.payment_obj = json.dumps(payment_obj)
 
 
 @commit_on_success

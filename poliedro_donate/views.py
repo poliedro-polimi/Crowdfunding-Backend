@@ -30,6 +30,9 @@ def paypal_create_payment():
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
 
+    # Store request into database
+    donation = database.register_donation(req)
+
     body = {
         "payer": {
             "payment_method": "paypal"
@@ -41,7 +44,8 @@ def paypal_create_payment():
                 "currency": "EUR"
             },
             "description": strings.PP_ITEM_NAME[lang] + " - " + strings.PP_ITEM_DESC(lang, req["stretch_goal"],
-                                                                                     req["items"])
+                                                                                     req["items"]) + " (id: #D{}T{})".format(
+                donation.id, donation.transaction.id)
         }],
         "redirect_urls": {
             "cancel_url": url_for("paypal_cancel"),
@@ -59,8 +63,8 @@ def paypal_create_payment():
         ioe.body = body
         raise
 
-    # Store request into database
-    database.register_donation(req, payment.id, body)
+    # Store transaction into database
+    database.add_transaction_details(donation, payment.id, body)
 
     return jsonify({"paymentID": payment.id})
 
