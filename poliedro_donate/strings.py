@@ -34,3 +34,8 @@ STRETCH_GOAL_NAMES = {
         3: "PoliMi Pride Full Kit - sackpack, pins, stickers, t-shirt/tank top"
     }
 }
+
+CONFIRMATION_EMAIL_SUBJECT = {
+    "it": "Donazione per PoliEdro inviata - conferma (id: {id})",
+    "en": "Donation to PoliEdro sent - confirmation (id: {id})"
+}

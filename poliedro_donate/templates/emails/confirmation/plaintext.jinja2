@@ -1,0 +1,42 @@
+PoliEdro - PoliMi Pride
+-----------------------
+
+{{ _("Hello") }},
+{{ _("Thanks for your donation!") }}
+{{ _("These are your donation details, for your records.") }}
+
+######################################################################
+{% if donation.stretch_goal > 0 %}{{ _("IMPORTANT: You asked for a gadget reservation. Print or show this email when picking them up.") }}{% endif %}
+######################################################################
+
+{{ _("Donation ID") }}:	{{ donation.pretty_id }}
+{{ _("Amount") }}:	€ {{ donation.amount }}
+{% if donation.notes %}{{ _("Notes") }}:	{{ donation.notes }}{% endif %}
+{% if donation.reference %}{{ _("Reference") }}:
+- {{ _("First name") }}:	{{ donation.reference.firstname }}
+- {{ _("Last name") }}:	{{ donation.reference.lastname }}
+- {{ _("E-mail") }}:	{{ donation.reference.email }}
+- {{ _("Phone") }}:	{{ donation.reference.phone }}{% endif %}
+{% if donation.stretch_goal > 0 %}
+{{ _("Reserved gadget") }}:	{{ strings.STRETCH_GOAL_NAMES[lang][donation.stretch_goal] }}
+{{ _("Quantity") }}:	{{ donation.items }}
+{{ _("Pick up campus") }}:	{{ donation.reference.location.capitalize() }}
+{% if donation.stretch_goal == 3 %}
++------------------+
+{{ "| {:^16} |".format(_("Shirts")) }}
++------------+-----+
+{% for i in dbhelpers.db2json_shirts(donation.shirts) %}{{ "| {type:<10} | {size:<3} |\n".format(**i) }}{% endfor %}+------------+-----+
+{% endif %}
+{{ _("You can pick up your gadgets at Politecnico di Milano in {campus} campus at our stands during Milano Pride Week.").format(campus=donation.reference.location.capitalize()) }}
+{{ _("Follow our Telegram channel [1] and our Instagram page [2] to stay up to date with pick up dates and exact locations.") }}
+{% endif %}
+
+{{ _("For any questions you can reply to this email to contact us.") }}
+
+{{ _("Have a nice day") }},
+{{ _("-- PoliEdro's IT team ;)") }}
+
+{% if donation.stretch_goal > 0 %}
+[1] https://t.me/PoliEdroLive
+[2] https://instagram.com/poliedro.polimi
+{% endif %}

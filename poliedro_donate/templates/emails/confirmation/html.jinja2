@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ _("Donation confirmation email") }}</title>
+    <style type="text/css">
+        body {
+            font-family: sans-serif;
+        }
+
+        h1, h2#donation-id {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<h1 id="maintitle">PoliEdro - PoliMi Pride</h1>
+
+<p>
+    {{ _("Hello") }},<br/>
+    {{ _("Thanks for your donation!") }}
+</p>
+<p>
+    {{ _("These are your donation details, for your records.") }}
+</p>
+
+{% if donation.stretch_goal > 0 %}
+    <p><h4>
+    {{ _("IMPORTANT: You asked for a gadget reservation. Print or show this email when picking them up.") }}
+</h4></p>
+{% endif %}
+
+<h2 id="donation-id"><b>{{ _("Donation ID") }}:</b> <u>{{ donation.pretty_id }}</u></h2>
+
+<ul>
+    <li><b>{{ _("Amount") }}:</b> &euro; {{ donation.amount }}</li>
+    {% if donation.notes %}
+        <li><b>{{ _("Notes") }}:</b> {{ donation.notes }}</li>
+    {% endif %}
+</ul>
+
+
+{% if donation.reference %}
+    <br>{{ _("Reference") }}:
+    <ul>
+        <li><b>{{ _("First name") }}:</b> {{ donation.reference.firstname }}</li>
+        <li><b>{{ _("Last name") }}:</b> {{ donation.reference.lastname }}</li>
+        <li><b>{{ _("E-mail") }}:</b> {{ donation.reference.email }}</li>
+        <li><b>{{ _("Phone") }}:</b> {{ donation.reference.phone }}</li>
+    </ul>
+{% endif %}
+
+{% if donation.stretch_goal > 0 %}
+    <ul>
+        <li><b>{{ _("Reserved gadget") }}:</b> {{ strings.STRETCH_GOAL_NAMES[lang][donation.stretch_goal] }}</li>
+        <li><b>{{ _("Quantity") }}:</b> {{ donation.items }}</li>
+        <li><b>{{ _("Pick up campus") }}:</b> {{ donation.reference.location.capitalize() }}</li>
+    </ul>
+    {% if donation.stretch_goal == 3 and donation.items > 0 %}
+        <table>
+            <thead>
+            <tr>
+                <th><b>{{ _("Shirt type") }}</b></th>
+                <th><b>{{ _("Size") }}</b></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for s in dbhelpers.db2json_shirts(donation.shirts) %}
+                <tr>
+                    <td>{{ s["type"] }}</td>
+                    <td>{{ s["size"] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    <p>
+        {{ _("You can pick up your gadgets at Politecnico di Milano in {campus} campus at our stands during Milano Pride Week.").format(campus=donation.reference.location.capitalize()) }}
+    </p>
+    <p>
+        {{ _("Follow our <a href='https://t.me/PoliEdroLive'>Telegram channel</a> and our <a href='https://instagram.com/poliedro.polimi'>Instagram page</a> to stay up to date with pick up dates and exact locations.") }}
+    </p>
+{% endif %}
+
+<p>
+    {{ _("For any questions you can reply to this email to contact us.") }}
+</p>
+
+<p>
+    {{ _("Have a nice day") }},<br/>
+    {{ _("-- PoliEdro's <a href='https://github.com/poliedro-polimi'>IT team</a> ;)") }}
+</p>
+
+</body>
+</html>

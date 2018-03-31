@@ -1,7 +1,7 @@
 import requests
 from flask import render_template
 
-from . import app
+from . import app, strings, database
 from .errors import MailerError
 
 """
@@ -11,11 +11,31 @@ Mailers should be used as classes: all configuration must be stored in app.confi
 _mailers = {}
 
 
+def send_confirmation_email(dest, donation, lang="en"):
+    data = {
+        "from": app.config["APP_MAILER_FROM"],
+        "to": dest,
+        "bcc": "donations@poliedro-polimi.it",
+        "subject": strings.CONFIRMATION_EMAIL_SUBJECT[lang]
+    }
+
+    template_vars = {
+        "strings": strings,
+        "lang": lang,
+        "donation": donation,
+        "dbhelpers": database.helpers
+    }
+
+    mailer = get_mailer()
+    mailer.send(data, template_vars, "emails/confirmation/plaintext.jinja2", "emails/confirmation/html.jinja2")
+
+
+
 def register_mailer(name, mailer):
     _mailers[name] = mailer
 
 
-def get_mailer(name=None):
+def get_mailer(name=None) -> 'Mailer':
     if not name:
         name = app.config["APP_MAILER"]
 
@@ -36,9 +56,10 @@ class MailgunMailer(Mailer):
 
     @classmethod
     def send(cls, data, template_vars, plaintext_template, html_template=None, files=None):
-        data["text"] = str(render_template(plaintext_template, **template_vars))
+        data["text"] = render_template(plaintext_template, **template_vars)
+
         if html_template:
-            data["html"] = str(render_template(html_template, **template_vars))
+            data["html"] = render_template(html_template, **template_vars)
 
         kwargs = {
             "auth": ("api", app.config["MAILGUN_API_KEY"]),
