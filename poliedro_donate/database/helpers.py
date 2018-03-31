@@ -42,6 +42,11 @@ def db2json_shirt(s: Shirt) -> dict:
     }
 
 
+def db2json_shirts(shirts):
+    for s in shirts:
+        yield db2json_shirt(s)
+
+
 def deconstruct_object(obj) -> dict:
     dest = {}
     for key in (i for i in dir(obj) if not i.startswith("_")):
