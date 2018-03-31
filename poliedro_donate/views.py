@@ -70,7 +70,10 @@ def paypal_create_payment():
         # Store transaction into database
         database.add_transaction_details(donation, payment.id, body)
 
-        return jsonify({"paymentID": payment.id})
+        return jsonify({
+            "paymentID": payment.id,
+            "donation_id": donation.pretty_id
+        })
 
     except Exception as e:
         raise DonationError(donation, e)
@@ -115,7 +118,8 @@ def paypal_execute_payment():
         database.register_transaction(req["paymentID"], req["payerID"], jresult, jresult["state"])
 
         return jsonify({
-            "result": jresult["state"]
+            "result": jresult["state"],
+            "donation_id": donation.pretty_id
         })
 
     except Exception as e:
