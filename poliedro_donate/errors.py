@@ -7,6 +7,14 @@ from flask import jsonify
 from . import app
 
 
+class DonationError(Exception):
+    def __init__(self, donation, parent_exc=None):
+        self.donation = donation
+        self.parent_exc = parent_exc
+
+        super(DonationError, self).__init__("Donation ID: #D{}-T{}".format(donation.id, donation.transaction.id))
+
+
 @app.errorhandler(braintreehttp.HttpError)
 def handle_paypal_error(error):
     print("\n---- PayPal error ----", file=sys.stderr)
@@ -39,6 +47,16 @@ def handle_paypal_error(error):
         response.status_code = 502
 
     return response
+
+
+@app.errorhandler(DonationError)
+def handle_donation_error(error):
+    # Log entire traceback, including the DonationError
+    app.log_exception(sys.exc_info())
+
+    # Find handler for parent exception and call it
+    # noinspection PyProtectedMember
+    return app._find_error_handler(error.parent_exc)(error.parent_exc)
 
 
 @app.errorhandler(KeyError)

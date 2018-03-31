@@ -1,13 +1,16 @@
 from __future__ import print_function
 
 import sys, traceback
+from typing import cast
 
 import braintreehttp
 from flask import request, jsonify, url_for
+from poliedro_donate.database.models import Transaction
 
 from . import app, strings, database
 from .validator import validate_donation_request, validate_execute_request
 from .paypal import pp_client
+from .errors import DonationError
 
 import paypalrestsdk.v1.payments as payments
 
@@ -33,40 +36,45 @@ def paypal_create_payment():
     # Store request into database
     donation = database.register_donation(req)
 
-    body = {
-        "payer": {
-            "payment_method": "paypal"
-        },
-        "intent": "sale",
-        "transactions": [{
-            "amount": {
-                "total": str(req["donation"]),
-                "currency": "EUR"
-            },
-            "description": strings.PP_ITEM_NAME[lang] + " - " + strings.PP_ITEM_DESC(lang, req["stretch_goal"],
-                                                                                     req["items"]) + " (id: #D{}T{})".format(
-                donation.id, donation.transaction.id)
-        }],
-        "redirect_urls": {
-            "cancel_url": url_for("paypal_cancel"),
-            "return_url": url_for("paypal_return")
-        },
-    }
-
-    payment_create_request = payments.PaymentCreateRequest()
-    payment_create_request.request_body(body)
-
     try:
-        payment_create_response = pp_client.execute(payment_create_request)
-        payment = payment_create_response.result
-    except IOError as ioe:
-        ioe.body = body
-        raise
+        body = {
+            "payer": {
+                "payment_method": "paypal"
+            },
+            "intent": "sale",
+            "transactions": [{
+                "amount": {
+                    "total": str(req["donation"]),
+                    "currency": "EUR"
+                },
+                "description": strings.PP_ITEM_NAME[lang] + " - " + strings.PP_ITEM_DESC(lang, req["stretch_goal"],
+                                                                                         req[
+                                                                                             "items"]) + " (id: #D{}T{})".format(
+                    donation.id, donation.transaction.id)
+            }],
+            "redirect_urls": {
+                "cancel_url": url_for("paypal_cancel"),
+                "return_url": url_for("paypal_return")
+            },
+        }
 
-    # Store transaction into database
-    database.add_transaction_details(donation, payment.id, body)
+        payment_create_request = payments.PaymentCreateRequest()
+        payment_create_request.request_body(body)
 
-    return jsonify({"paymentID": payment.id})
+        try:
+            payment_create_response = pp_client.execute(payment_create_request)
+            payment = payment_create_response.result
+        except IOError as ioe:
+            ioe.body = body
+            raise
+
+        # Store transaction into database
+        database.add_transaction_details(donation, payment.id, body)
+
+        return jsonify({"paymentID": payment.id})
+
+    except Exception as e:
+        raise DonationError(donation, e)
 
 
 @app.route(app.config["APP_WEB_ROOT"] + '/paypal/execute', methods=('POST',))
@@ -82,30 +90,37 @@ def paypal_execute_payment():
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
 
-    body = {
-        "payer_id": req["payerID"]
-    }
-
-    payment_execute_request = payments.PaymentExecuteRequest(req["paymentID"])
-    payment_execute_request.request_body(body)
+    query = Transaction.query.filter_by(payment_id=req["paymentID"])
+    donation = query[0].donation
 
     try:
-        payment_execute_response = pp_client.execute(payment_execute_request, parse=False)
-        r = payment_execute_response
-        if r.status_code < 200 or r.status_code > 299:
-            raise braintreehttp.http_error.HttpError(r.text, r.status_code, r.headers)
-    except IOError as ioe:
-        ioe.body = body
-        raise
+        body = {
+            "payer_id": req["payerID"]
+        }
 
-    jresult = r.json()
+        payment_execute_request = payments.PaymentExecuteRequest(req["paymentID"])
+        payment_execute_request.request_body(body)
 
-    # Store payment execution into database
-    database.register_transaction(req["paymentID"], req["payerID"], jresult, jresult["state"])
+        try:
+            payment_execute_response = pp_client.execute(payment_execute_request, parse=False)
+            r = payment_execute_response
+            if r.status_code < 200 or r.status_code > 299:
+                raise braintreehttp.http_error.HttpError(r.text, r.status_code, r.headers)
+        except IOError as ioe:
+            ioe.body = body
+            raise
 
-    return jsonify({
-        "result": jresult["state"]
-    })
+        jresult = r.json()
+
+        # Store payment execution into database
+        database.register_transaction(req["paymentID"], req["payerID"], jresult, jresult["state"])
+
+        return jsonify({
+            "result": jresult["state"]
+        })
+
+    except Exception as e:
+        raise DonationError(donation, e)
 
 
 @app.route(app.config["APP_WEB_ROOT"] + '/paypal/cancel')
