@@ -1,6 +1,8 @@
 from __future__ import print_function
 
 import sys, traceback
+
+import braintreehttp
 from flask import request, jsonify, url_for
 
 from . import app, strings, database
@@ -84,17 +86,21 @@ def paypal_execute_payment():
     payment_execute_request.request_body(body)
 
     try:
-        payment_execute_response = pp_client.execute(payment_execute_request)
-        result = payment_execute_response.result
+        payment_execute_response = pp_client.execute(payment_execute_request, parse=False)
+        r = payment_execute_response
+        if r.status_code < 200 or r.status_code > 299:
+            raise braintreehttp.http_error.HttpError(r.text, r.status_code, r.headers)
     except IOError as ioe:
         ioe.body = body
         raise
 
+    jresult = r.json()
+
     # Store payment execution into database
-    database.register_transaction(req["paymentID"], req["payerID"], result, result.state)
+    database.register_transaction(req["paymentID"], req["payerID"], jresult, jresult["state"])
 
     return jsonify({
-        "result": result.state
+        "result": jresult["state"]
     })
 
 
