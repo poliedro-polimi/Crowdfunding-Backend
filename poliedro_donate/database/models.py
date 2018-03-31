@@ -49,3 +49,12 @@ class Donation(db.Model):
 
     transaction_id = db.Column(db.Integer, db.ForeignKey("transaction.id"), nullable=True)
     transaction = db.relationship("Transaction", backref=db.backref("donation", lazy=True, uselist=False))
+
+    @property
+    def pretty_id(self):
+        donation_id = "#D{}".format(self.id)
+
+        if self.transaction:
+            donation_id = "{}-T{}".format(donation_id, self.transaction.id)
+
+        return donation_id

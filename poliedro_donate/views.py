@@ -49,8 +49,7 @@ def paypal_create_payment():
                 },
                 "description": strings.PP_ITEM_NAME[lang] + " - " + strings.PP_ITEM_DESC(lang, req["stretch_goal"],
                                                                                          req[
-                                                                                             "items"]) + " (id: #D{}T{})".format(
-                    donation.id, donation.transaction.id)
+                                                                                             "items"]) + " (id: {})".format(donation.pretty_id)
             }],
             "redirect_urls": {
                 "cancel_url": url_for("paypal_cancel"),

@@ -11,7 +11,7 @@ class DonationError(Exception):
     def __init__(self, donation, parent_exc=None):
         self.donation = donation
         self.parent_exc = parent_exc
-        self.donation_id = "#D{}-T{}".format(donation.id, donation.transaction.id)
+        self.donation_id = donation.pretty_id
 
         if parent_exc:
             parent_exc.donation_id = self.donation_id
