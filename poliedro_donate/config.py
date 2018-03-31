@@ -11,5 +11,9 @@ class DefaultConfig(object):
     APP_SSL = True
     APP_WEB_ROOT = ""
     APP_MODE = "development"
+    APP_MAILER = "mailgun"
+    APP_MAILER_FROM = ""
+    MAILGUN_API_KEY = ""
+    MAILGUN_DOMAIN = ""
     APP_ENABLE_CORS = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False

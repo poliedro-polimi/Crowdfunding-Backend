@@ -19,6 +19,10 @@ class DonationError(Exception):
         super(DonationError, self).__init__("Donation ID: {}".format(self.donation_id))
 
 
+class MailerError(IOError):
+    pass
+
+
 @app.errorhandler(braintreehttp.HttpError)
 def handle_paypal_error(error):
     print("\n---- PayPal error ----", file=sys.stderr)
@@ -38,9 +42,9 @@ def handle_paypal_error(error):
 
     if error.status_code == 403:
         ejson = {"error": {
-                "type": jerr["name"],
-                "message": jerr["message"]
-            }}
+            "type": jerr["name"],
+            "message": jerr["message"]
+        }}
     else:
         ejson = {"error": {
             "type": "_PAYPAL_ERROR",
