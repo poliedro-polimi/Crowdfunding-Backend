@@ -119,28 +119,29 @@ def paypal_execute_payment():
         database.register_transaction(req["paymentID"], req["payerID"], jresult, jresult["state"])
 
         # Send confirmation email
-        to_addrs = []
-        if donation.reference:
-            to_addrs.append(donation.reference.email)
+        if app.config["APP_MAILER"] is not None:
+            to_addrs = []
+            if donation.reference:
+                to_addrs.append(donation.reference.email)
 
-        paypal_addr = get_paypal_email(jresult)
-        if paypal_addr:
-            to_addrs.append(paypal_addr)
+            paypal_addr = get_paypal_email(jresult)
+            if paypal_addr:
+                to_addrs.append(paypal_addr)
 
-        lang = "en"
-        if "lang" in req:
-            lang = req["lang"]
-        elif donation.reference and donation.reference.lang:
-            lang = donation.reference.lang
+            lang = "en"
+            if "lang" in req:
+                lang = req["lang"]
+            elif donation.reference and donation.reference.lang:
+                lang = donation.reference.lang
 
-        if len(to_addrs) == 0:
-            warnings.warn("User has no email address! Donation ID: {}".format(donation.pretty_id))
-        else:
-            try:
-                mail.send_confirmation_email(to_addrs, donation, lang)
-            except mail.MailerError as e:
-                app.log_exception(e)
-                app.log_exception(DonationError(donation, e))
+            if len(to_addrs) == 0:
+                warnings.warn("User has no email address! Donation ID: {}".format(donation.pretty_id))
+            else:
+                try:
+                    mail.send_confirmation_email(to_addrs, donation, lang)
+                except mail.MailerError as e:
+                    app.log_exception(e)
+                    app.log_exception(DonationError(donation, e))
 
         return jsonify({
             "result": jresult["state"],
