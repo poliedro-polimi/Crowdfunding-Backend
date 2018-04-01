@@ -13,7 +13,7 @@ Mailers should be used as classes: all configuration must be stored in app.confi
 _mailers = {}
 
 
-def send_confirmation_email(dest, donation, lang="en"):
+def send_confirmation_email(dest, donation, lang="en", dryrun=False):
     data = {
         "from": app.config["APP_MAILER_FROM"],
         "to": dest,
@@ -29,7 +29,7 @@ def send_confirmation_email(dest, donation, lang="en"):
     }
 
     mailer = get_mailer()
-    mailer.send(data, template_vars, "emails/confirmation/plaintext.jinja2", "emails/confirmation/html.jinja2")
+    mailer.send(data, template_vars, "emails/confirmation/plaintext.jinja2", "emails/confirmation/html.jinja2", dryrun=dryrun)
 
 
 
@@ -49,7 +49,7 @@ class Mailer(object):
         raise AssertionError("Mailers should not be instanced")
 
     @classmethod
-    def send(cls, data, template_vars, plaintext_template, html_template=None, files=None):
+    def send(cls, data, template_vars, plaintext_template, html_template=None, files=None, dryrun=False):
         raise NotImplementedError
 
 
@@ -57,7 +57,7 @@ class MailgunMailer(Mailer):
     send_url = "https://api.mailgun.net/v3/{domain}/messages"
 
     @classmethod
-    def send(cls, data, template_vars, plaintext_template, html_template=None, files=None):
+    def send(cls, data, template_vars, plaintext_template, html_template=None, files=None, dryrun=False):
         data["text"] = render_template(plaintext_template, **template_vars)
 
         if html_template:
@@ -70,6 +70,9 @@ class MailgunMailer(Mailer):
 
         if files:
             kwargs["files"] = files
+
+        if dryrun:
+            return
 
         r = requests.post(
             cls.send_url.format(domain=app.config["MAILGUN_DOMAIN"]),
