@@ -19,7 +19,7 @@
         <ul>
             <li><strong>ID</strong>: {{ donation.pretty_id }}</li>
             <li><strong>Amount</strong>: &euro;{{ donation.amount }}</li>
-            <li><strong>Stretch goal</strong>: {{ donation.stretch_goal }}</li>
+            <li><strong>Stretch goal</strong>: {{ donation.stretch_goal }} - <i>{{ strings.STRETCH_GOAL_NAMES['en'][donation.stretch_goal] }}</i></li>
             <li><strong>Items</strong>: {{ donation.items }}</li>
             <li><strong>Notes</strong>: {{ donation.notes }}</li>
         </ul>
