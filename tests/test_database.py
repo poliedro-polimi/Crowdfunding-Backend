@@ -21,10 +21,12 @@ def create_db():
 
 @pytest.fixture(autouse=True)
 def setup_cleanup_tests():
+    db.session.commit()
     db.reflect()
     db.drop_all()
     db.create_all()
     db.reflect()
+    db.session.commit()
     yield
 
 
