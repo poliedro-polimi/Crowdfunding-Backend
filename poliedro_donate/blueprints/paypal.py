@@ -36,6 +36,9 @@ def create_payment():
     if int(request.args.get("validate_only", 0)) and app.config["APP_MODE"] == "development":
         return jsonify({"success": "Provided JSON looks good"})
 
+    if app.config.get("APP_MAX_STRETCH_GOAL", None) and req["stretch_goal"] > app.config["APP_MAX_STRETCH_GOAL"]:
+        raise ValueError("Selected stretch goal isn't available at the moment.")
+
     # Store request into database
     donation = database.register_donation(req)
 
