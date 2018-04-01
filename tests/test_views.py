@@ -1,5 +1,6 @@
 import json, pytest, sys
 from flask import url_for
+from poliedro_donate.database import register_donation, register_transaction
 
 from .datasets import *
 
@@ -91,6 +92,9 @@ def test_paypal_execute_payment_bad(client):
 
 
 def test_paypal_execute_payment_paypal_error(client):
+    d = register_donation(JSON_SG0_GOOD, SAMPLE_PAYMENT_ID, SAMPLE_PAYMENT_OBJ)
+    register_transaction(SAMPLE_PAYMENT_ID, SAMPLE_PAYER_ID, SAMPLE_PAYMENT_RESULT_DICT, SAMPLE_PAYMENT_RESULT_OBJ.state)
+
     # validate_only is not specified and auth credentials are invalid
     r = client.post(url_for('paypal.execute_payment'),
                     data=json.dumps(JSON_EXECUTE_PAYMENT_GOOD),
