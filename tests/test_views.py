@@ -1,6 +1,6 @@
 import json, pytest, sys
 from flask import url_for
-from poliedro_donate.database import register_donation, register_transaction
+from poliedro_donate.database import register_donation, register_transaction, db
 
 from .datasets import *
 
@@ -12,12 +12,24 @@ if sys.version_info.major == 2:
     # noinspection PyUnresolvedReferences,PyShadowingBuiltins
     str = unicode
 
+
 @pytest.fixture
 def app():
     application.config["APP_MODE"] = "development"
     application.config["PAYPAL_CLIENT_ID"] = "invalid"
     application.config["PAYPAL_CLIENT_SECRET"] = "invalid"
     return application
+
+
+@pytest.fixture(autouse=True)
+def setup_cleanup_tests():
+    db.session.commit()
+    db.reflect()
+    db.drop_all()
+    db.create_all()
+    db.reflect()
+    db.session.commit()
+    yield
 
 
 def test_paypal_create_payment_good(client):
@@ -93,7 +105,8 @@ def test_paypal_execute_payment_bad(client):
 
 def test_paypal_execute_payment_paypal_error(client):
     d = register_donation(JSON_SG0_GOOD, SAMPLE_PAYMENT_ID, SAMPLE_PAYMENT_OBJ)
-    register_transaction(SAMPLE_PAYMENT_ID, SAMPLE_PAYER_ID, SAMPLE_PAYMENT_RESULT_DICT, SAMPLE_PAYMENT_RESULT_OBJ.state)
+    register_transaction(SAMPLE_PAYMENT_ID, SAMPLE_PAYER_ID, SAMPLE_PAYMENT_RESULT_DICT,
+                         SAMPLE_PAYMENT_RESULT_OBJ.state)
 
     # validate_only is not specified and auth credentials are invalid
     r = client.post(url_for('paypal.execute_payment'),
