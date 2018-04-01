@@ -1,9 +1,17 @@
 import os
 import pytest
 
+from poliedro_donate import app
 from poliedro_donate.cli import *
 from poliedro_donate.database import db
 from poliedro_donate.database.models import AdminUser
+
+
+@pytest.fixture(scope="module", autouse=True)
+def create_db():
+    # Ensure we're not deleting production db
+    assert app.config["APP_MODE"] == "development"
+    yield
 
 
 @pytest.fixture(scope="module", autouse=True)
