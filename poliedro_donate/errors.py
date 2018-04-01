@@ -1,8 +1,6 @@
 __all__ = ('DonationError', 'MailerError', 'handle_donation_error', 'handle_generic_exception', 'handle_invalid_usage',
            'handle_paypal_error')
 
-from __future__ import print_function
-
 import sys, traceback, json
 import braintreehttp
 from flask import jsonify
