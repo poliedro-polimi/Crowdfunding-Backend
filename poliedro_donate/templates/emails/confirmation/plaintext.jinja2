@@ -25,7 +25,7 @@ PoliEdro - PoliMi Pride
 +------------------+
 {{ "| {:^16} |".format(_("Shirts")) }}
 +------------+-----+
-{% for i in dbhelpers.db2json_shirts(donation.shirts) %}{{ "| {type:<10} | {size:<3} |\n".format(**i) }}{% endfor %}+------------+-----+
+{% for i in dbhelpers.db2json_shirts(donation.shirts) %}{{ "| {type:<10} | {size:<3} |\n".format(type=strings.HR_SHIRT_TYPES[lang][i["type"]], size=i["size"]) }}{% endfor %}+------------+-----+
 {% endif %}
 {{ _("You can pick up your gadgets at Politecnico di Milano in {campus} campus at our stands during Milano Pride Week.").format(campus=donation.reference.location.capitalize()) }}
 {{ _("Follow our Telegram channel [1] and our Instagram page [2] to stay up to date with pick up dates and exact locations.") }}

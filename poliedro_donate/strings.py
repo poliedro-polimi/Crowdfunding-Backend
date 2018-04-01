@@ -39,3 +39,14 @@ CONFIRMATION_EMAIL_SUBJECT = {
     "it": "Donazione per PoliEdro inviata - conferma (id: {id})",
     "en": "Donation to PoliEdro sent - confirmation (id: {id})"
 }
+
+HR_SHIRT_TYPES = {
+    "it": {
+        "tank-top": "Canotta",
+        "t-shirt": "T-shirt"
+    },
+    "en": {
+        "tank-top": "Tank top",
+        "t-shirt": "T-shirt"
+    }
+}

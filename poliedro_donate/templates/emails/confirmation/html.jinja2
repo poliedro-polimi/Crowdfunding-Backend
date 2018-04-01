@@ -76,7 +76,7 @@
             <tbody>
             {% for s in dbhelpers.db2json_shirts(donation.shirts) %}
                 <tr>
-                    <td>{{ s["type"] }}</td>
+                    <td>{{ strings.HR_SHIRT_TYPES[s["type"]] }}</td>
                     <td>{{ s["size"] }}</td>
                 </tr>
             {% endfor %}
