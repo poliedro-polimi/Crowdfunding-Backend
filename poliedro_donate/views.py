@@ -120,6 +120,7 @@ def paypal_execute_payment():
         database.register_transaction(req["paymentID"], req["payerID"], jresult, jresult["state"])
 
         # Send confirmation email
+        mail_error = False
         if app.config["APP_MAILER"] is not None:
             to_addrs = []
             if donation.reference:
@@ -140,14 +141,27 @@ def paypal_execute_payment():
             else:
                 try:
                     mail.send_confirmation_email(to_addrs, donation, lang)
-                except mail.MailerError as e:
+                except Exception as e:
+                    mail_error = True
                     app.log_exception(e)
                     app.log_exception(DonationError(donation, e))
 
-        return jsonify({
+        rjson = {
             "result": jresult["state"],
             "donation_id": donation.pretty_id
-        })
+        }
+
+        if mail_error:
+            rjson["error"] = {
+                "type": "_MAIL_ERROR",
+                "message": "The donation has been recorded, however an error occurred while trying to send you a "
+                           "confirmation email. As the email is required to pick up the gadgets, you should contact "
+                           "us at info@poliedro-polimi.it and send us the donation ID ({}), so we can send it to you "
+                           "manually.".format(
+                    donation.pretty_id)
+            }
+
+        return jsonify(rjson)
 
     except Exception as e:
         raise DonationError(donation, e)
