@@ -18,6 +18,7 @@ def app():
     application.config["APP_MODE"] = "development"
     application.config["PAYPAL_CLIENT_ID"] = "invalid"
     application.config["PAYPAL_CLIENT_SECRET"] = "invalid"
+    application.debug = True  # Required to avoid SSL redirects in tests
     return application
 
 
