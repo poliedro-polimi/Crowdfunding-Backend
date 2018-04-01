@@ -66,22 +66,7 @@
         <li><b>{{ _("Pick up campus") }}:</b> {{ donation.reference.location.capitalize() }}</li>
     </ul>
     {% if donation.stretch_goal == 3 and donation.items > 0 %}
-        <table>
-            <thead>
-            <tr>
-                <th><b>{{ _("Shirt type") }}</b></th>
-                <th><b>{{ _("Size") }}</b></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for s in dbhelpers.db2json_shirts(donation.shirts) %}
-                <tr>
-                    <td>{{ strings.HR_SHIRT_TYPES[s["type"]] }}</td>
-                    <td>{{ s["size"] }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {% include 'shirts_table.html' %}
     {% endif %}
     <p>
         {{ _("You can pick up your gadgets at Politecnico di Milano in {campus} campus at our stands during Milano Pride Week.").format(campus=donation.reference.location.capitalize()) }}
