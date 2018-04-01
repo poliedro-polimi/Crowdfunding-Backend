@@ -3,7 +3,7 @@ from __future__ import print_function
 import sys, traceback
 import warnings
 import braintreehttp
-from flask import request, jsonify, url_for, g
+from flask import request, jsonify, url_for, g, Blueprint
 
 from . import app, strings, database, mail
 from .database.models import Transaction
@@ -14,8 +14,10 @@ from .utils import get_paypal_email
 
 import paypalrestsdk.v1.payments as payments
 
+paypal_bp = Blueprint('paypal', __name__, template_folder='templates')
 
-@app.route(app.config["APP_WEB_ROOT"] + '/paypal/create', methods=('POST',))
+
+@paypal_bp.route('/create', methods=('POST',))
 def paypal_create_payment():
     req = request.get_json()
 
@@ -81,7 +83,7 @@ def paypal_create_payment():
         raise DonationError(donation, e)
 
 
-@app.route(app.config["APP_WEB_ROOT"] + '/paypal/execute', methods=('POST',))
+@paypal_bp.route('/execute', methods=('POST',))
 def paypal_execute_payment():
     req = request.json
 
@@ -167,11 +169,11 @@ def paypal_execute_payment():
         raise DonationError(donation, e)
 
 
-@app.route(app.config["APP_WEB_ROOT"] + '/paypal/cancel')
+@paypal_bp.route('/cancel')
 def paypal_cancel():
     return jsonify({"error": "This is a stub"})
 
 
-@app.route(app.config["APP_WEB_ROOT"] + '/paypal/return')
+@paypal_bp.route('/return')
 def paypal_return():
     return jsonify({"error": "This is a stub"})

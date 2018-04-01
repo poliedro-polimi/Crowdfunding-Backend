@@ -22,4 +22,6 @@ def get_locale():
 
 from .cli import *
 from .errors import *
-from .views import *
+from .views import paypal_bp
+
+app.register_blueprint(paypal_bp, url_prefix=app.config["APP_WEB_ROOT"] + '/paypal')
