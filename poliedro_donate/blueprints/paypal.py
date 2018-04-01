@@ -5,20 +5,20 @@ import warnings
 import braintreehttp
 from flask import request, jsonify, url_for, g, Blueprint
 
-from . import app, strings, database, mail
-from .database.models import Transaction
-from .validator import validate_donation_request, validate_execute_request
-from .paypal import pp_client
-from .errors import DonationError
-from .utils import get_paypal_email
+from .. import app, strings, database, mail
+from ..database.models import Transaction
+from ..validator import validate_donation_request, validate_execute_request
+from ..paypal import pp_client
+from ..errors import DonationError
+from ..utils import get_paypal_email
 
 import paypalrestsdk.v1.payments as payments
 
-paypal_bp = Blueprint('paypal', __name__, template_folder='templates')
+paypal_bp = Blueprint('paypal', __name__)
 
 
 @paypal_bp.route('/create', methods=('POST',))
-def paypal_create_payment():
+def create_payment():
     req = request.get_json()
 
     try:
@@ -56,8 +56,8 @@ def paypal_create_payment():
                     donation.pretty_id)
             }],
             "redirect_urls": {
-                "cancel_url": url_for("paypal_cancel"),
-                "return_url": url_for("paypal_return")
+                "cancel_url": url_for("paypal.cancel"),
+                "return_url": url_for("paypal.return_")
             },
         }
 
@@ -84,7 +84,7 @@ def paypal_create_payment():
 
 
 @paypal_bp.route('/execute', methods=('POST',))
-def paypal_execute_payment():
+def execute_payment():
     req = request.json
 
     try:
@@ -170,10 +170,10 @@ def paypal_execute_payment():
 
 
 @paypal_bp.route('/cancel')
-def paypal_cancel():
+def cancel():
     return jsonify({"error": "This is a stub"})
 
 
 @paypal_bp.route('/return')
-def paypal_return():
+def return_():
     return jsonify({"error": "This is a stub"})

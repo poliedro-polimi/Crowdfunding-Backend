@@ -20,7 +20,7 @@ def app():
 
 
 def test_paypal_create_payment_good(client):
-    r = client.post(url_for('paypal_create_payment') + "?validate_only=1",
+    r = client.post(url_for('paypal.create_payment') + "?validate_only=1",
                     data=json.dumps(JSON_SG0_GOOD),
                     content_type="application/json")
 
@@ -34,7 +34,7 @@ def test_paypal_create_payment_good(client):
 
 
 def test_paypal_create_payment_bad(client):
-    r = client.post(url_for('paypal_create_payment') + "?validate_only=1",
+    r = client.post(url_for('paypal.create_payment') + "?validate_only=1",
                     data=json.dumps(JSON_STRETCH_GOAL_MISSING),
                     content_type="application/json")
 
@@ -49,7 +49,7 @@ def test_paypal_create_payment_bad(client):
 
 def test_paypal_create_payment_paypal_error(client):
     # validate_only is not specified and auth credentials are invalid
-    r = client.post(url_for('paypal_create_payment'),
+    r = client.post(url_for('paypal.create_payment'),
                     data=json.dumps(JSON_SG0_GOOD),
                     content_type="application/json")
 
@@ -63,7 +63,7 @@ def test_paypal_create_payment_paypal_error(client):
 
 
 def test_paypal_execute_payment_good(client):
-    r = client.post(url_for('paypal_execute_payment') + "?validate_only=1",
+    r = client.post(url_for('paypal.execute_payment') + "?validate_only=1",
                     data=json.dumps(JSON_EXECUTE_PAYMENT_GOOD),
                     content_type="application/json")
 
@@ -77,7 +77,7 @@ def test_paypal_execute_payment_good(client):
 
 
 def test_paypal_execute_payment_bad(client):
-    r = client.post(url_for('paypal_execute_payment') + "?validate_only=1",
+    r = client.post(url_for('paypal.execute_payment') + "?validate_only=1",
                     data=json.dumps(JSON_EXECUTE_PAYMENT_BAD),
                     content_type="application/json")
 
@@ -92,7 +92,7 @@ def test_paypal_execute_payment_bad(client):
 
 def test_paypal_execute_payment_paypal_error(client):
     # validate_only is not specified and auth credentials are invalid
-    r = client.post(url_for('paypal_execute_payment'),
+    r = client.post(url_for('paypal.execute_payment'),
                     data=json.dumps(JSON_EXECUTE_PAYMENT_GOOD),
                     content_type="application/json")
 
