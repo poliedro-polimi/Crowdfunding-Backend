@@ -70,7 +70,7 @@ class MailgunMailer(Mailer):
             kwargs["files"] = files
 
         r = requests.post(
-            cls.send_url.format(app.config["MAILGUN_DOMAIN"]),
+            cls.send_url.format(domain=app.config["MAILGUN_DOMAIN"]),
             **kwargs
         )
 
