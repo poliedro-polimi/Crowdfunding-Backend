@@ -1,0 +1,16 @@
+<table>
+    <thead>
+    <tr>
+        <th><b>{{ _("Shirt type") }}</b></th>
+        <th><b>{{ _("Size") }}</b></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for s in dbhelpers.db2json_shirts(donation.shirts) %}
+        <tr>
+            <td>{{ strings.HR_SHIRT_TYPES[lang][s["type"]] }}</td>
+            <td>{{ s["size"] }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

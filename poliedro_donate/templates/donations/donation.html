@@ -1,0 +1,61 @@
+{% extends 'donations/base.html' %}
+
+{% block title %}Donation {{ donation.pretty_id }}{% endblock %}
+
+{% block body %}
+    {{ super() }}
+
+    <h1>Donation {{ donation.pretty_id }}</h1>
+
+    <div>
+        {% if donation.reference %}
+            &xrArr; <a href="{{ url_for("donations.reference", r_id=donation.reference.id) }}">Reference</a>
+        {% else %}
+            <i>No reference</i>
+        {% endif %}
+    </div>
+
+    <div>
+        <ul>
+            <li><strong>ID</strong>: {{ donation.pretty_id }}</li>
+            <li><strong>Amount</strong>: &euro;{{ donation.amount }}</li>
+            <li><strong>Stretch goal</strong>: {{ donation.stretch_goal }}</li>
+            <li><strong>Items</strong>: {{ donation.items }}</li>
+            <li><strong>Notes</strong>: {{ donation.notes }}</li>
+        </ul>
+    </div>
+
+
+    {% if donation.stretch_goal == 3 and donation.items > 0 %}
+        <div>
+            <h2>Shirts</h2>
+            {% with lang='en' %}
+                {% include 'shirts_table.html' %}
+            {% endwith %}
+        </div>
+    {% endif %}
+
+
+    {% if donation.transaction %}
+        <div>
+            <h2>Associated transaction</h2>
+            <ul>
+                <li><strong>Payment ID</strong>: {{ donation.transaction.payment_id }}</li>
+                <li><strong>Payer ID</strong>: {{ donation.transaction.payer_id }}</li>
+                <li><strong>State</strong>: {{ donation.transaction.state }}</li>
+                {% if donation.transaction.payment_obj %}
+                    <li><strong>Payment object</strong>: <br>
+                        <pre>{{ json.dumps(json.loads(donation.transaction.payment_obj), indent=True) }}</pre>
+                    </li>
+                {% endif %}
+                {% if donation.transaction.result_obj %}
+                    <li><strong>Result object</strong>: <br>
+                        <pre>{{ json.dumps(json.loads(donation.transaction.result_obj), indent=True) }}</pre>
+                    </li>
+                {% endif %}
+            </ul>
+
+        </div>
+    {% endif %}
+
+{% endblock %}

@@ -3,7 +3,7 @@ __all__ = (
     'errors', 'mail', 'paypal', 'strings', 'utils', 'validator'
 )
 
-import os
+import os, json
 from flask import Flask, g
 from flask_babel import Babel
 
@@ -28,8 +28,13 @@ def get_locale():
     return getattr(g, "lang", "en")
 
 
+app.jinja_env.globals['json'] = json
+app.jinja_env.globals['len'] = len
+
 from .cli import *
 from .errors import *
 from .blueprints.paypal import paypal_bp
+from .blueprints.donations import donations_bp
 
 app.register_blueprint(paypal_bp, url_prefix='/paypal')
+app.register_blueprint(donations_bp, url_prefix='/donations')

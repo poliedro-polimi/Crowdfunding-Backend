@@ -1,0 +1,33 @@
+{% extends 'donations/base.html' %}
+
+{% block title %}Reference {{ reference.id }}{% endblock %}
+
+{% block body %}
+    {{ super() }}
+
+    <h1>Reference {{ reference.id }}</h1>
+
+
+    <div>
+        <ul>
+            <li><strong>First name</strong>: {{ reference.firstname }}</li>
+            <li><strong>Last name</strong>: {{ reference.lastname }}</li>
+            <li><strong>Email</strong>: <a href="mailto:{{ reference.email }}">{{ reference.email }}</a></li>
+            <li><strong>Phone</strong>: <a href="tel:{{ reference.phone }}">{{ reference.phone }}</a></li>
+            <li><strong>Location</strong>: {{ reference.location }}</li>
+            <li><strong>Lang</strong>: {{ reference.lang }}</li>
+        </ul>
+    </div>
+
+    <h2>Donations</h2>
+    <ul>
+        {% if len(reference.donations) == 0 %}
+            <li><i>No donations.</i></li>
+        {% else %}
+            {% for d in reference.donations %}
+                <li><a href="{{ url_for("donations.donation", d_id=d.id, t_id=d.transaction_id) }}">Donation {{ d.pretty_id }}</a></li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+{% endblock %}
