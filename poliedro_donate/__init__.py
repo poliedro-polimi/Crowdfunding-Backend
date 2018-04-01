@@ -6,6 +6,7 @@ __all__ = (
 import os, json
 from flask import Flask, g
 from flask_babel import Babel
+from flask_sslify import SSLify
 
 from poliedro_donate.config import DefaultConfig
 
@@ -19,6 +20,9 @@ if app.config.get("APP_ENABLE_CORS", False):
     from flask_cors import CORS
 
     CORS(app)
+
+if app.config["APP_SSL"]:
+    sslify = SSLify(app, age=app.config["APP_SSL_AGE"], permanent=True)
 
 babel = Babel(app)
 

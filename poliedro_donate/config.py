@@ -11,6 +11,7 @@ class DefaultConfig(object):
     PAYPAL_WEB_URL = paypalrestsdk.core.PayPalEnvironment.SANDBOX_WEB_URL
     APP_DOMAIN = "poliedropolimi.pythonanywhere.com"
     APP_SSL = True
+    APP_SSL_AGE = 300
     APP_MODE = "development"
     APP_MAILER = "mailgun"
     APP_MAILER_FROM = ""
