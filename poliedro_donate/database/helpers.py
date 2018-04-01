@@ -9,23 +9,19 @@ from ..validator import SHIRT_SIZES, SHIRT_TYPES
 
 # https://gist.github.com/yashh/14d12595f3dfa307a354
 def commit_on_success(func):
+    @wraps(func)
     def _commit_on_success(*args, **kw):
         try:
             res = func(*args, **kw)
+            db.session.commit()
         except Exception:
             if db.session.dirty:
                 db.session.rollback()
             raise
-        else:
-            if db.session.dirty:
-                try:
-                    db.session.commit()
-                except Exception:
-                    db.session.rollback()
-                    raise
+
         return res
 
-    return wraps(func)(_commit_on_success)
+    return _commit_on_success
 
 
 def json2db_shirt(s: dict) -> dict:
