@@ -2,6 +2,8 @@ import os
 import pytest
 
 from poliedro_donate.cli import *
+from poliedro_donate.database import db
+from poliedro_donate.database.models import AdminUser
 
 
 @pytest.fixture(scope="module", autouse=True)
