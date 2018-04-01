@@ -1,3 +1,8 @@
+__all__ = (
+    'app', 'babel', 'blueprints', 'database', 'auth', 'cli', 'config',
+    'errors', 'mail', 'paypal', 'strings', 'utils', 'validator'
+)
+
 import os
 from flask import Flask, g
 from flask_babel import Babel
@@ -12,13 +17,16 @@ if 'POLIEDRO_DONATE_CONFIG' in os.environ:
 
 if app.config.get("APP_ENABLE_CORS", False):
     from flask_cors import CORS
+
     CORS(app)
 
 babel = Babel(app)
 
+
 @babel.localeselector
 def get_locale():
     return getattr(g, "lang", "en")
+
 
 from .cli import *
 from .errors import *

@@ -1,3 +1,5 @@
+__all__ = ('send_confirmation_email', 'register_mailer', 'get_mailer', 'Mailer', 'MailgunMailer')
+
 import requests
 from flask import render_template
 

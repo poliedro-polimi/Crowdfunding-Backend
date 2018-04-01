@@ -1,3 +1,5 @@
+__all__ = ('main', 'initdb', 'cleardb', 'adduser', 'deluser', 'passwd')
+
 import click, getpass
 from socket import gethostname
 

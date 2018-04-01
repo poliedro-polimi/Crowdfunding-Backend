@@ -1,3 +1,5 @@
+__all__ = ('DefaultConfig')
+
 import paypalrestsdk.core
 
 
