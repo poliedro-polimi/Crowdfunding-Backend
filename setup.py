@@ -9,7 +9,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=['Flask', 'Flask-SQLAlchemy', 'paypalrestsdk==2.0.0rc1', 'flask-cors', 'Flask-Babel'] + test_deps,
+    install_requires=['Flask', 'Flask-SQLAlchemy', 'paypalrestsdk==2.0.0rc1', 'flask-cors', 'Flask-Babel', 'werkzeug'] + test_deps,
     dependency_links=[
         "https://github.com/Depau/braintreehttp_python-noparseresponse/archive/noparse.zip#egg=braintreehttp-0.4.3"
     ],

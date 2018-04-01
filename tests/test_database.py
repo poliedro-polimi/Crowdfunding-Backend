@@ -3,6 +3,8 @@ import json
 import pytest
 from typing import cast
 
+from poliedro_donate.database.models import AdminUser
+
 from poliedro_donate import app
 from poliedro_donate.database import db
 from poliedro_donate.database.helpers import json2db_shirt, db2json_shirt
@@ -191,3 +193,15 @@ def test_create_many():
 def test_payment_execute():
     _check_register_transaction(JSON_SG3_GOOD, SAMPLE_PAYMENT_ID, SAMPLE_PAYMENT_OBJ, SAMPLE_PAYER_ID,
                                 SAMPLE_PAYMENT_RESULT_OBJ, SAMPLE_PAYMENT_RESULT_DICT)
+
+
+def test_user():
+    u = AdminUser("test", "testpwd")
+    db.session.add(u)
+    db.session.commit()
+
+    query = AdminUser.query.filter_by(username='test')
+    u = query[0]
+
+    assert u.check_password("testpwd")
+    assert not u.check_password("wrongpwd")
