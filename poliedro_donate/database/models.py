@@ -55,6 +55,6 @@ class Donation(db.Model):
         donation_id = "#D{}".format(self.id)
 
         if self.transaction:
-            donation_id = "{}-T{}".format(donation_id, self.transaction.id)
+            donation_id = "{}T{}".format(donation_id, self.transaction.id)
 
         return donation_id
