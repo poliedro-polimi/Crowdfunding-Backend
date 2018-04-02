@@ -54,6 +54,19 @@ def by_location(location):
                            donation_sort_key=donation_sort_key, dbhelpers=helpers, strings=strings)
 
 
+@donations_bp.route('/by_location/<location>/labels')
+@donations_bp.route('/by_location/<location>/labels/')
+@requires_auth
+def print_labels(location):
+    if location not in LOCATIONS:
+        raise NotFound()
+
+    refs = User.query.filter_by(location=location).order_by(User.lastname).all()
+    donation_sort_key = lambda d: d.id
+    return render_template('donations/print_labels.html', refs=refs, location=location,
+                           donation_sort_key=donation_sort_key, dbhelpers=helpers, strings=strings)
+
+
 @donations_bp.route('/to_order')
 @donations_bp.route('/to_order/')
 @requires_auth
@@ -71,7 +84,7 @@ def to_order():
 
     # Count gadgets for each stretch goal
     for i in range(len(stretch_goals)):
-        stretch_goals[i] += sum(stretch_goals[i+1:])
+        stretch_goals[i] += sum(stretch_goals[i + 1:])
 
     return render_template('donations/to_order.html', stretch_goals=stretch_goals, shirts=shirts, dbhelpers=helpers,
                            strings=strings)

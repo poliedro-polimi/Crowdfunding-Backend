@@ -17,6 +17,9 @@
 
     <h1>Gadgets for {{ location.capitalize() }} campus</h1>
 
+    <p class="no-print">
+    &xrArr; <a href="{{ url_for("donations.print_labels", location=location) }}">Print labels</a>
+    </p>
 
     <div>
         <table>

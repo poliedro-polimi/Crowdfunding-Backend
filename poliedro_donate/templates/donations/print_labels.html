@@ -1,0 +1,85 @@
+{% extends 'donations/base.html' %}
+
+{% block title %}Labels for {{ location.capitalize() }} campus{% endblock %}
+
+{% block style %}
+    {{ super() }}
+
+    <style type="text/css">
+        main.labels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(12cm, 1fr));
+            grid-gap: 1mm;
+        }
+
+        .donation-label {
+            display: flex;
+            flex-flow: column;
+            position: relative;
+            width: 100%;
+            border: 1px dashed black;
+            padding: 0;
+        }
+
+        .donation-label .label-wrapper {
+            padding: 3mm;
+        }
+
+        .donation-label h1 {
+            margin: 0;
+            font-size: 40pt;
+            padding-left: 20px;
+        }
+
+        .donation-label ul {
+            display: block;
+            float: left;
+            margin: 0;
+        }
+
+        .donation-label .int-border {
+            position: absolute;
+            border-left: 0.5px dashed black;
+            height: 100%;
+            width: 0;
+            right: 25%;
+            top: 0;
+        }
+
+        .larger {
+            font-size: larger;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+
+
+    <main class="labels">
+        {% for reference in refs %}
+            {% for donation in sorted(reference.donations, key=donation_sort_key) %}
+                {% if donation.stretch_goal == 0 or not donation.transaction or donation.transaction.state != "approved" %}
+                {% else %}
+
+                    <div class="donation-label">
+                        <div class="label-wrapper">
+                            <h1>{{ donation.pretty_id }}</h1>
+                            <ul>
+                                <li><b><span class="larger">{{ donation.reference.lastname }}, {{ donation.reference.firstname }}</span></b></li>
+                                <li>{{ donation.reference.email }}</li>
+                                <li>{{ donation.reference.phone }}</li>
+                            </ul>
+                            <ul>
+                                <li>Gadg: {{ donation.stretch_goal }}</li>
+                                <li>Qty: {{ donation.items }}</li>
+                            </ul>
+                        </div>
+                        <div class="int-border"></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </main>
+
+{% endblock %}
