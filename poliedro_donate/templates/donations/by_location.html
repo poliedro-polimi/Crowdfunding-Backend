@@ -25,11 +25,11 @@
                 <th>Last name</th>
                 <th>First name</th>
                 <th>ID</th>
+                <th>Stretch goal</th>
+                <th>Items</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Amount</th>
-                <th>Stretch goal</th>
-                <th>Items</th>
             </tr>
             </thead>
             <tbody>
@@ -46,11 +46,11 @@
                             <td>
                                 <a href="{{ url_for("donations.donation", d_id=donation.id, t_id=donation.transaction_id) }}">{{ donation.pretty_id }}</a>
                             </td>
+                            <td>{{ donation.stretch_goal }}</td>
+                            <td>{{ donation.items }}</td>
                             <td><a href="mailto:{{ reference.email }}">{{ reference.email }}</a></td>
                             <td><a href="tel:{{ reference.phone }}">{{ reference.phone }}</a></td>
                             <td>{{ donation.amount }}</td>
-                            <td>{{ donation.stretch_goal }}</td>
-                            <td>{{ donation.items }}</td>
                         </tr>
 
                         {% if donation.stretch_goal == 3 %}
