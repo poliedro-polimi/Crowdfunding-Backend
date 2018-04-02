@@ -43,6 +43,21 @@ def db2json_shirts(shirts):
         yield db2json_shirt(s)
 
 
+def shirts_hr_count(shirts):
+    types = {}
+
+    for s in shirts:
+        tup = (s.type, s.size)
+
+        if tup in types:
+            types[tup] += 1
+        else:
+            types[tup] = 1
+
+    return [(count, SHIRT_TYPES[s[0]], SHIRT_SIZES[s[1]]) for s, count in
+            sorted(types.items(), key=lambda k, v: k[0] + k[1] / 10)]
+
+
 def deconstruct_object(obj) -> dict:
     dest = {}
     for key in (i for i in dir(obj) if not i.startswith("_")):

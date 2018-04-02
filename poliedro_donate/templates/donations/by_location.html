@@ -1,0 +1,71 @@
+{% extends 'donations/base.html' %}
+
+{% block title %}Gadgets for {{ location.capitalize() }} campus{% endblock %}
+
+{% block style %}
+    {{ super() }}
+
+    <style type="text/css">
+        tr.main-donation-row {
+            border-top: 3px solid black;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+
+    <h1>Gadgets for {{ location.capitalize() }} campus</h1>
+
+
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>Last name</th>
+                <th>First name</th>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Amount</th>
+                <th>Stretch goal</th>
+                <th>Items</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for reference in refs %}
+                {% for donation in sorted(reference.donations, key=donation_sort_key) %}
+                    {% if donation.stretch_goal == 0 or not donation.transaction or donation.transaction.state != "accepted" %}
+                    {% else %}
+
+                        <tr class="main-donation-row">
+                            <td>
+                                <a href="{{ url_for("donations.reference", r_id=reference.id) }}">{{ reference.lastname }}</a>
+                            </td>
+                            <td>{{ reference.firstname }}</td>
+                            <td>
+                                <a href="{{ url_for("donations.donation", d_id=donation.id, t_id=donation.transaction_id) }}">{{ donation.pretty_id }}</a>
+                            </td>
+                            <td><a href="mailto:{{ reference.email }}">{{ reference.email }}</a></td>
+                            <td><a href="tel:{{ reference.phone }}">{{ reference.phone }}</a></td>
+                            <td>{{ donation.amount }}</td>
+                            <td>{{ donation.stretch_goal }}</td>
+                            <td>{{ donation.items }}</td>
+                        </tr>
+
+                        {% if donation.stretch_goal == 3 %}
+                            <tr class="shirts-donation-row">
+                                <td colspan="8">
+                                    {{ format_shirts(donation.shirts) }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

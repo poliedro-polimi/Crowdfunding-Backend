@@ -35,3 +35,14 @@ def donation(d_id, t_id):
 def reference(r_id):
     r = User.query.filter_by(id=r_id).first_or_404()
     return render_template('donations/reference.html', reference=r)
+
+
+@donations_bp.route('/by_location/<location>')
+@donations_bp.route('/by_location/<location>/')
+@requires_auth
+def by_location(location):
+    refs = User.query.filter_by(location=location).order_by(User.lastname).all()
+    donation_sort_key = lambda d: d.pretty_id
+    format_shirts = lambda shirts: " - ".join((" ".join(i) for i in helpers.shirts_hr_count(shirts)))
+    return render_template('donations/by_location.html', refs=refs, location=location,
+                           donation_sort_key=donation_sort_key, format_shirts=format_shirts)
