@@ -51,6 +51,10 @@ def test_add_del_user():
 
     u = AdminUser.query.filter_by(username='test')
     assert u.count() == 0
+
+    with pytest.raises(ValueError) as exc:
+        deluser(['test'])
+
     db.drop_all()
     db.session.commit()
 
@@ -71,6 +75,9 @@ def test_user_chpasswd():
     u = AdminUser.query.filter_by(username='test')
     assert u.count() == 1
     assert u[0].check_password('newpassword')
+
+    with pytest.raises(ValueError) as exc:
+        passwd(['hello', 'newpassword'])
 
     with pytest.raises(SystemExit) as exc:
         deluser(['test'])
