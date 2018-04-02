@@ -1,16 +1,23 @@
 <table>
-    <thead>
-    <tr>
-        <th><b>{{ _("Shirt type") }}</b></th>
-        <th><b>{{ _("Size") }}</b></th>
-    </tr>
-    </thead>
     <tbody>
-    {% for s in dbhelpers.db2json_shirts(donation.shirts) %}
-        <tr>
-            <td>{{ strings.HR_SHIRT_TYPES[lang][s["type"]] }}</td>
-            <td>{{ s["size"] }}</td>
+    {% with shirts=dbhelpers.shirts_hr_count(donation.shirts) %}
+        <tr class="shirts-donation-row">
+            {% for t, sizes in shirts.items() %}
+                <td colspan="4">
+
+                    <div>{{ strings.HR_SHIRT_TYPES[lang][t] }}</div>
+                    <div>
+                        <ul>
+                            {% for s, count in sizes.items() %}
+                                {% if count > 0 %}
+                                    <li>{{ count }} {{ s }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </td>
+            {% endfor %}
         </tr>
-    {% endfor %}
+    {% endwith %}
     </tbody>
 </table>
