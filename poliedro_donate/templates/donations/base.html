@@ -15,11 +15,28 @@
                 table, th, td {
                     border: 1px solid black;
                 }
+
+                @media print {
+                    .no-print {
+                        display: none !important;
+                    }
+                }
             </style>
         {% endblock %}
     {% endblock %}
 </head>
 <body>
+{% block nav %}
+    <nav class="no-print">
+        <a href="{{ url_for("donations.list_all") }}">All donations</a>
+        &bullet;
+        <a href="{{ url_for("donations.to_order") }}">Gadgets to order</a>
+        &bullet;
+        Gadgets by campus: <a href="{{ url_for("donations.by_location", location="leonardo") }}">Leonardo</a>, <a
+            href="{{ url_for("donations.by_location", location="bovisa") }}">Bovisa</a>
+    </nav>
+{% endblock %}
+
 {% block body %}
 {% endblock %}
 
