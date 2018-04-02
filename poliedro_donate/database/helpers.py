@@ -55,7 +55,7 @@ def shirts_hr_count(shirts):
             types[tup] = 1
 
     return [(count, SHIRT_TYPES[s[0]], SHIRT_SIZES[s[1]]) for s, count in
-            sorted(types.items(), key=lambda k, v: k[0] + k[1] / 10)]
+            sorted(types.items(), key=lambda s: s[0][0] + s[0][1] / 10)]
 
 
 def deconstruct_object(obj) -> dict:

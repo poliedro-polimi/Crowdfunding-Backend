@@ -35,7 +35,7 @@
             <tbody>
             {% for reference in refs %}
                 {% for donation in sorted(reference.donations, key=donation_sort_key) %}
-                    {% if donation.stretch_goal == 0 or not donation.transaction or donation.transaction.state != "accepted" %}
+                    {% if donation.stretch_goal == 0 or not donation.transaction or donation.transaction.state != "approved" %}
                     {% else %}
 
                         <tr class="main-donation-row">
