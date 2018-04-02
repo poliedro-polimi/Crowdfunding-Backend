@@ -16,6 +16,8 @@ app.config.from_object(DefaultConfig)
 if 'POLIEDRO_DONATE_CONFIG' in os.environ:
     app.config.from_envvar('POLIEDRO_DONATE_CONFIG')
 
+from .database import db
+
 if app.config.get("APP_ENABLE_CORS", False):
     from flask_cors import CORS
 
