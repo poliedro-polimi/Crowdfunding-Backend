@@ -49,6 +49,7 @@ def create_payment():
             },
             "intent": "sale",
             "transactions": [{
+                "invoice_number": donation.pretty_id,
                 "amount": {
                     "total": str(req["donation"]),
                     "currency": "EUR"
