@@ -64,7 +64,7 @@
 
                     <div class="donation-label">
                         <div class="label-wrapper">
-                            <h1>{{ donation.pretty_id }}</h1>
+                            <h1>{{ donation.pretty_id[1:] }}</h1>
                             <ul>
                                 <li><b><span class="larger">{{ donation.reference.lastname }}, {{ donation.reference.firstname }}</span></b></li>
                                 <li>{{ donation.reference.email }}</li>
@@ -73,6 +73,7 @@
                             <ul>
                                 <li>Gadg: {{ donation.stretch_goal }}</li>
                                 <li>Qty: {{ donation.items }}</li>
+                                <li>Cmps: {{ location.capitalize()[:3] }}</li>
                             </ul>
                         </div>
                         <div class="int-border"></div>
