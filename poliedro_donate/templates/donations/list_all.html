@@ -5,7 +5,7 @@
 {% block body %}
     {{ super() }}
 
-    <h1>All donations ({{ len(donations) }})</h1>
+    <h1>All donations ({{ len(donations) }} - &euro;{{ total }} raised)</h1>
 
     <div>
         {% if len(donations) == 0 %}

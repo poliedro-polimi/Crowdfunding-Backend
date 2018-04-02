@@ -13,7 +13,12 @@ donations_bp = Blueprint('donations', __name__)
 @requires_auth
 def list_all():
     d = Donation.query.all()
-    return render_template('donations/list_all.html', donations=d)
+
+    total = 0
+    for donation in d:
+        total += donation.amount
+
+    return render_template('donations/list_all.html', donations=d, total=total)
 
 
 @donations_bp.route('/D<int:d_id>T<int:t_id>')
