@@ -45,7 +45,7 @@
                             {{ donation.items }}
                         </td>
                         <td>
-                            {% if donation.transaction %}
+                            {% if donation.transaction and donation.transaction.state %}
                                 {{ donation.transaction.state }}
                             {% else %}
                                 <i>n/a</i>
