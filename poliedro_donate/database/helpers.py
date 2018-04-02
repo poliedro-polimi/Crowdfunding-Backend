@@ -1,6 +1,7 @@
 __all__ = ('commit_on_success', 'json2db_shirt', 'db2json_shirt')
 
 from functools import wraps
+from collections import OrderedDict
 
 from .database import db
 from .models import Shirt
@@ -44,18 +45,14 @@ def db2json_shirts(shirts):
 
 
 def shirts_hr_count(shirts):
-    types = {}
+    types = OrderedDict(
+        {i: OrderedDict({j: 0 for j in SHIRT_SIZES}) for i in SHIRT_TYPES}
+    )
 
     for s in shirts:
-        tup = (s.type, s.size)
+        types[SHIRT_TYPES[s.type]][SHIRT_SIZES[s.size]] += 1
 
-        if tup in types:
-            types[tup] += 1
-        else:
-            types[tup] = 1
-
-    return [(count, SHIRT_TYPES[s[0]], SHIRT_SIZES[s[1]]) for s, count in
-            sorted(types.items(), key=lambda s: s[0][0] + s[0][1] / 10)]
+    return types
 
 
 def deconstruct_object(obj) -> dict:
