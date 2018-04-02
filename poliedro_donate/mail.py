@@ -1,7 +1,7 @@
 __all__ = ('send_confirmation_email', 'register_mailer', 'get_mailer', 'Mailer', 'MailgunMailer')
 
 import requests
-from flask import render_template
+from flask import render_template, g
 
 from . import app, strings, database
 from .errors import MailerError
@@ -18,7 +18,7 @@ def send_confirmation_email(dest, donation, lang="en", dryrun=False):
         "from": app.config["APP_MAILER_FROM"],
         "to": dest,
         "bcc": "donations@poliedro-polimi.it",
-        "subject": strings.CONFIRMATION_EMAIL_SUBJECT[lang]
+        "subject": strings.CONFIRMATION_EMAIL_SUBJECT[lang].format(id=donation.pretty_id)
     }
 
     template_vars = {
@@ -27,6 +27,8 @@ def send_confirmation_email(dest, donation, lang="en", dryrun=False):
         "donation": donation,
         "dbhelpers": database.helpers
     }
+
+    g.lang = lang
 
     mailer = get_mailer()
     mailer.send(data, template_vars, "emails/confirmation/plaintext.jinja2", "emails/confirmation/html.jinja2", dryrun=dryrun)
