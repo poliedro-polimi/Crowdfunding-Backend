@@ -30,7 +30,7 @@
                         </td>
                         <td>
                             {% if donation.reference %}
-                                <a href="{{ url_for("donations.reference", r_id=donation.user_id) }}">{{ donation.user_id }}</a>
+                                <a href="{{ url_for("donations.reference", r_id=donation.user_id) }}">{{ donation.user_id }} ({{ donation.reference.firstname }} {{ donation.reference.lastname }})</a>
                             {% else %}
                                 <i>None</i>
                             {% endif %}
