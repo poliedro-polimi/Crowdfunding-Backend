@@ -1,3 +1,5 @@
+import braintreehttp.http_response
+
 JSON_SG0_GOOD = {
     "donation": 10,
     "stretch_goal": 0,
@@ -264,10 +266,107 @@ SAMPLE_PAYMENT_OBJ = {
     },
 }
 
-SAMPLE_PAYMENT_RESULT_OBJ = dest = type(str("Result"), (object,), {})
-SAMPLE_PAYMENT_RESULT_OBJ.state = "accepted"
+SAMPLE_PAYMENT_RESULT_DICT = {
+    "id": "PAY-7S8766975F679581RLLAZQQA",
+    "intent": "sale",
+    "state": "approved",
+    "cart": "0U078830GC215480U",
+    "payer": {
+        "payment_method": "paypal",
+        "status": "VERIFIED",
+        "payer_info": {
+            "email": "info-buy@poliedro-polimi.it",
+            "first_name": "PoliEdro",
+            "last_name": "EsciISoldi",
+            "payer_id": "QT8FQQDSJZKLN",
+            "shipping_address": {
+                "recipient_name": "PoliEdro EsciISoldi",
+                "line1": "Via Unit? d'Italia, 5783296",
+                "city": "Napoli",
+                "state": "Napoli",
+                "postal_code": "80127",
+                "country_code": "IT"
+            },
+            "country_code": "IT"
+        }
+    },
+    "transactions": [
+        {
+            "amount": {
+                "total": "90.00",
+                "currency": "EUR",
+                "details": {}
+            },
+            "payee": {
+                "merchant_id": "R2EFMMT372XLL",
+                "email": "info-facilitator@poliedro-polimi.it"
+            },
+            "description": "Donation to PoliEdro - With gadget reservation: 9x PoliMi Pride Full Kit - sackpack, pins, stickers, t-shirt/tank top (id: #D19T19)",
+            "item_list": {
+                "shipping_address": {
+                    "recipient_name": "PoliEdro EsciISoldi",
+                    "line1": "Via Unit? d'Italia, 5783296",
+                    "city": "Napoli",
+                    "state": "Napoli",
+                    "postal_code": "80127",
+                    "country_code": "IT"
+                }
+            },
+            "related_resources": [
+                {
+                    "sale": {
+                        "id": "97H56559EV9382605",
+                        "state": "completed",
+                        "amount": {
+                            "total": "90.00",
+                            "currency": "EUR",
+                            "details": {
+                                "subtotal": "90.00"
+                            }
+                        },
+                        "payment_mode": "INSTANT_TRANSFER",
+                        "protection_eligibility": "ELIGIBLE",
+                        "protection_eligibility_type": "ITEM_NOT_RECEIVED_ELIGIBLE,UNAUTHORIZED_PAYMENT_ELIGIBLE",
+                        "transaction_fee": {
+                            "value": "3.41",
+                            "currency": "EUR"
+                        },
+                        "parent_payment": "PAY-7S8766975F679581RLLAZQQA",
+                        "create_time": "2018-04-02T02:42:02Z",
+                        "update_time": "2018-04-02T02:42:02Z",
+                        "links": [
+                            {
+                                "href": "https://api.sandbox.paypal.com/v1/payments/sale/97H56559EV9382605",
+                                "rel": "self",
+                                "method": "GET"
+                            },
+                            {
+                                "href": "https://api.sandbox.paypal.com/v1/payments/sale/97H56559EV9382605/refund",
+                                "rel": "refund",
+                                "method": "POST"
+                            },
+                            {
+                                "href": "https://api.sandbox.paypal.com/v1/payments/payment/PAY-7S8766975F679581RLLAZQQA",
+                                "rel": "parent_payment",
+                                "method": "GET"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "create_time": "2018-04-02T02:42:03Z",
+    "links": [
+        {
+            "href": "https://api.sandbox.paypal.com/v1/payments/payment/PAY-7S8766975F679581RLLAZQQA",
+            "rel": "self",
+            "method": "GET"
+        }
+    ]
+}
 
-SAMPLE_PAYMENT_RESULT_DICT = {"state": "accepted"}
+SAMPLE_PAYMENT_RESULT_OBJ = braintreehttp.http_response.construct_object('Result', SAMPLE_PAYMENT_RESULT_DICT)
 
 
 def _random_string():
