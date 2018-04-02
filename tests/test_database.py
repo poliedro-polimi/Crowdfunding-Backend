@@ -108,7 +108,7 @@ def _check_register_donation(req, payment_id, payment_obj, sg):
 
 def _check_register_transaction(donation_req, payment_id, payment_obj, payer_id, result_obj, result_dict):
     d = register_donation(donation_req, payment_id, payment_obj)
-    register_transaction(payment_id, payer_id, result_obj, result_obj.state)
+    register_transaction(payment_id, payer_id, result_dict, result_obj.state)
 
     tq = Transaction.query.filter_by(payment_id=payment_id)
     assert tq.count() == 1
