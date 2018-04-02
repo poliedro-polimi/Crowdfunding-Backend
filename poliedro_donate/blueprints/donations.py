@@ -1,14 +1,14 @@
-from werkzeug.exceptions import NotFound
-
-from poliedro_donate.validator import LOCATIONS
-
 __all__ = ('donations_bp', 'donation')
 
+from collections import OrderedDict
+from werkzeug.exceptions import NotFound
 from flask import Blueprint, render_template
+
 from .. import strings
 from ..auth import requires_auth
 from ..database import helpers
-from ..database.models import Donation, User
+from ..database.models import Donation, User, Transaction
+from ..validator import LOCATIONS, STRETCH_GOAL_PRICES
 
 donations_bp = Blueprint('donations', __name__)
 
@@ -52,3 +52,26 @@ def by_location(location):
     donation_sort_key = lambda d: d.pretty_id
     return render_template('donations/by_location.html', refs=refs, location=location,
                            donation_sort_key=donation_sort_key, dbhelpers=helpers, strings=strings)
+
+
+@donations_bp.route('/to_order')
+@donations_bp.route('/to_order/')
+@requires_auth
+def to_order():
+    transactions = Transaction.query.filter_by(state='approved')
+    shirts = []
+    stretch_goals = [0] * len(STRETCH_GOAL_PRICES)
+
+    for transaction in transactions:
+        if transaction.donation.stretch_goal > 0:
+            stretch_goals[transaction.donation.stretch_goal] += transaction.donation.items
+
+        if transaction.donation.stretch_goal == 3:
+            shirts += transaction.donation.shirts
+
+    # Count gadgets for each stretch goal
+    for i in range(len(stretch_goals)):
+        stretch_goals[i] += sum(stretch_goals[i+1:])
+
+    return render_template('donations/to_order.html', stretch_goals=stretch_goals, shirts=shirts, dbhelpers=helpers,
+                           strings=strings)

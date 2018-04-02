@@ -1,0 +1,40 @@
+{% extends 'donations/base.html' %}
+
+{% block title %}Gadgets to order{% endblock %}
+
+{% block body %}
+    {{ super() }}
+
+    <h1>Gadgets to order</h1>
+
+
+    <div>
+
+        {# Gadget names are hardcoded. This is not optimal. #}
+        <ul>
+            <li>Sackpacks: {{ stretch_goals[1] }}</li>
+            <li>Stickers+Pins: {{ stretch_goals[2] }}</li>
+            <li>Shirts: {{ stretch_goals[3] }}</li>
+        </ul>
+
+
+        {% with shirts=dbhelpers.shirts_hr_count(shirts) %}
+            <ul>
+                {% for t, sizes in shirts.items() %}
+                    <li>
+                        {{ strings.HR_SHIRT_TYPES['en'][t] }}
+                        <ul>
+                            {% for s, count in sizes.items() %}
+                                {% if count > 0 %}
+                                    <li>{{ s }}: {{ count }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endwith %}
+
+    </div>
+
+{% endblock %}
