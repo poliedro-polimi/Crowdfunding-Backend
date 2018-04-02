@@ -19,6 +19,7 @@
                     <th>Amount</th>
                     <th>Stretch goal</th>
                     <th>Items</th>
+                    <th>Trans. state</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,6 +43,13 @@
                         </td>
                         <td>
                             {{ donation.items }}
+                        </td>
+                        <td>
+                            {% if donation.transaction %}
+                                {{ donation.transaction.state }}
+                            {% else %}
+                                <i>n/a</i>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
