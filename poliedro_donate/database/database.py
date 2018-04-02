@@ -1,13 +1,20 @@
 __all__ = ("db", "register_donation", "register_transaction", "register_reference", "add_transaction_details")
 
 from .. import app
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy(app)
+from flask_sqlalchemy import SQLAlchemy as SQLAlchemyBase
 
 import json
 import warnings
 from typing import AnyStr, cast
+
+
+class SQLAlchemy(SQLAlchemyBase):
+    def apply_pool_defaults(self, app, options):
+        super(SQLAlchemy, self).apply_pool_defaults(app, options)
+        options["pool_pre_ping"] = True
+
+
+db = SQLAlchemy(app)
 
 from .helpers import commit_on_success, json2db_shirt, deconstruct_object
 from .models import Donation, Transaction, Shirt, User
