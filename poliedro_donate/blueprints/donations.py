@@ -1,3 +1,7 @@
+from werkzeug.exceptions import NotFound
+
+from poliedro_donate.validator import LOCATIONS
+
 __all__ = ('donations_bp', 'donation')
 
 from flask import Blueprint, render_template
@@ -41,6 +45,9 @@ def reference(r_id):
 @donations_bp.route('/by_location/<location>/')
 @requires_auth
 def by_location(location):
+    if location not in LOCATIONS:
+        raise NotFound()
+
     refs = User.query.filter_by(location=location).order_by(User.lastname).all()
     donation_sort_key = lambda d: d.pretty_id
     format_shirts = lambda shirts: " - ".join((" ".join(i) for i in helpers.shirts_hr_count(shirts)))
