@@ -55,9 +55,7 @@ def create_payment():
                     "currency": "EUR"
                 },
                 "description": strings.PP_ITEM_NAME[lang] + " - " + strings.PP_ITEM_DESC(lang, req["stretch_goal"],
-                                                                                         req[
-                                                                                             "items"]) + " (id: {})".format(
-                    donation.pretty_id)
+                                                                                         req["items"])
             }],
             "redirect_urls": {
                 "cancel_url": url_for("paypal.cancel"),
