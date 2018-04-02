@@ -5,6 +5,10 @@
 {% block body %}
     {{ super() }}
 
+    <p>
+    &xlArr; <a href="{{ url_for("donations.list_all") }}">Donations list</a>
+    </p>
+
     <h1>Donation {{ donation.pretty_id }}</h1>
 
     <div>
