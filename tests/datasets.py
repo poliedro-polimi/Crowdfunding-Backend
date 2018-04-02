@@ -266,6 +266,8 @@ SAMPLE_PAYMENT_OBJ = {
     },
 }
 
+SAMPLE_PAYPAL_EMAIL = "info-buy@poliedro-polimi.it"
+
 SAMPLE_PAYMENT_RESULT_DICT = {
     "id": "PAY-7S8766975F679581RLLAZQQA",
     "intent": "sale",

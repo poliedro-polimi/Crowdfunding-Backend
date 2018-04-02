@@ -1,5 +1,6 @@
 import pytest
 
+from poliedro_donate.utils import get_paypal_email
 from .datasets import *
 
 from poliedro_donate import app as application
@@ -36,6 +37,10 @@ def donation():
     db.reflect()
     db.drop_all()
     db.session.commit()
+
+
+def test_get_paypal_email():
+    assert get_paypal_email(SAMPLE_PAYMENT_RESULT_DICT) == SAMPLE_PAYPAL_EMAIL
 
 
 def test_email_confirmation_en(app, donation):
