@@ -1,6 +1,10 @@
+import base64
 import json, pytest, sys
 from flask import url_for
+from werkzeug.datastructures import Headers
+
 from poliedro_donate.database import register_donation, register_transaction, db
+from poliedro_donate.database.models import AdminUser
 
 from .datasets import *
 
@@ -11,6 +15,13 @@ if sys.version_info.major == 2:
     bytes = str
     # noinspection PyUnresolvedReferences,PyShadowingBuiltins
     str = unicode
+
+
+def _auth_header(user, pwd):
+    d = Headers()
+    d.add("Authorization", "Basic {}".format(base64.b64encode("{}:{}".format(user, pwd).encode()).decode()))
+    print(d)
+    return d
 
 
 @pytest.fixture
@@ -29,6 +40,9 @@ def setup_cleanup_tests():
     db.drop_all()
     db.create_all()
     db.reflect()
+    db.session.commit()
+    u = AdminUser('test', 'test')
+    db.session.add(u)
     db.session.commit()
     yield
 
@@ -121,3 +135,83 @@ def test_paypal_execute_payment_paypal_error(client):
 
     assert r.status_code == 502
     assert j["error"]["type"] == "_PAYPAL_ERROR"
+
+
+def test_donations_list(client):
+    r = client.get(url_for('donations.list_all'), follow_redirects=True, headers=_auth_header('test', 'test'))
+    assert r.status_code == 200
+
+
+def test_by_location_bovisa(client):
+    r = client.get(url_for('donations.by_location', location="bovisa"), follow_redirects=True,
+                   headers=_auth_header('test', 'test'))
+    assert r.status_code == 200
+
+
+def test_by_location_leonardo(client):
+    r = client.get(url_for('donations.by_location', location="leonardo"), follow_redirects=True,
+                   headers=_auth_header('test', 'test'))
+    assert r.status_code == 200
+
+
+def test_by_location_bogus(client):
+    r = client.get(url_for('donations.by_location', location="bogus"), follow_redirects=True,
+                   headers=_auth_header('test', 'test'))
+    assert r.status_code == 404
+
+
+def test_print_labels_bovisa(client):
+    r = client.get(url_for('donations.print_labels', location="bovisa"), follow_redirects=True,
+                   headers=_auth_header('test', 'test'))
+    assert r.status_code == 200
+
+
+def test_print_labels_leonardo(client):
+    r = client.get(url_for('donations.print_labels', location="leonardo"), follow_redirects=True,
+                   headers=_auth_header('test', 'test'))
+    assert r.status_code == 200
+
+
+def test_print_labels_bogus(client):
+    r = client.get(url_for('donations.print_labels', location="bogus"), follow_redirects=True,
+                   headers=_auth_header('test', 'test'))
+    assert r.status_code == 404
+
+
+def test_donation_notexist(client):
+    r = client.get(url_for('donations.donation', d_id=999, t_id=999), follow_redirects=True,
+                   headers=_auth_header('test', 'test'))
+    assert r.status_code == 404
+
+
+def test_reference_notexist(client):
+    r = client.get(url_for('donations.reference', r_id=999), follow_redirects=True,
+                   headers=_auth_header('test', 'test'))
+    assert r.status_code == 404
+
+
+def test_to_order(client):
+    r = client.get(url_for('donations.to_order'), follow_redirects=True, headers=_auth_header('test', 'test'))
+    assert r.status_code == 200
+
+
+def test_auth_wrong(client):
+    r = client.get(url_for('donations.list_all'), follow_redirects=True, headers=_auth_header('penis', 'dick'))
+    assert r.status_code == 401
+
+
+def test_no_auth(client):
+    r = client.get(url_for('donations.list_all'), follow_redirects=True, headers=_auth_header('penis', 'dick'))
+    assert r.status_code == 401
+
+
+def test_ssl_redirect(app, client):
+    old_debug = app.debug
+    app.debug = False
+    try:
+        r = client.get(url_for('donations.list_all'), headers=_auth_header('test', 'test'))
+        assert r.status_code == 301
+        assert r.headers.get('Location').startswith("https://")
+    finally:
+        app.debug = old_debug
+
