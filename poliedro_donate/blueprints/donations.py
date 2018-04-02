@@ -49,7 +49,7 @@ def by_location(location):
         raise NotFound()
 
     refs = User.query.filter_by(location=location).order_by(User.lastname).all()
-    donation_sort_key = lambda d: d.pretty_id
+    donation_sort_key = lambda d: d.id
     return render_template('donations/by_location.html', refs=refs, location=location,
                            donation_sort_key=donation_sort_key, dbhelpers=helpers, strings=strings)
 
