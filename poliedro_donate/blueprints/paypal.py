@@ -126,13 +126,14 @@ def execute_payment():
         # Send confirmation email
         mail_error = False
         if app.config["APP_MAILER"] is not None:
-            to_addrs = []
+            to_addrs = set()
             if donation.reference:
-                to_addrs.append(donation.reference.email)
+                to_addrs.update({donation.reference.email})
 
             paypal_addr = get_paypal_email(jresult)
             if paypal_addr:
-                to_addrs.append(paypal_addr)
+                to_addrs.update({paypal_addr})
+            to_addrs = list(to_addrs)
 
             lang = "en"
             if "lang" in req:
