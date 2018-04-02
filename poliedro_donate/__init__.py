@@ -34,6 +34,7 @@ def get_locale():
 
 app.jinja_env.globals['json'] = json
 app.jinja_env.globals['len'] = len
+app.jinja_env.globals['sorted'] = sorted
 
 from .cli import *
 from .errors import *
