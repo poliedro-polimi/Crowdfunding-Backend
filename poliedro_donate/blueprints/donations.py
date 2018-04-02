@@ -1,4 +1,3 @@
-
 __all__ = ('donations_bp', 'donation')
 
 from flask import Blueprint, render_template
@@ -8,6 +7,13 @@ from ..database import helpers
 from ..database.models import Donation, User
 
 donations_bp = Blueprint('donations', __name__)
+
+
+@donations_bp.route('/')
+@requires_auth
+def list_all():
+    d = Donation.query.all()
+    return render_template('donations/list_all.html', donations=d)
 
 
 @donations_bp.route('/D<int:d_id>T<int:t_id>')
