@@ -22,7 +22,7 @@ JSON_SG1_GOOD = {
 }
 
 JSON_SG2_GOOD = {
-    "donation": 17,
+    "donation": 50,
     "stretch_goal": 2,
     "items": 3,
     "notes": "",
@@ -36,7 +36,7 @@ JSON_SG2_GOOD = {
 }
 
 JSON_SG3_GOOD = {
-    "donation": 35,
+    "donation": 100,
     "stretch_goal": 3,
     "items": 3,
     "shirts": [
@@ -152,7 +152,7 @@ JSON_STRETCH_GOAL_MISSING = {
 }
 
 JSON_INVALID_LANG = {
-    "donation": 35,
+    "donation": 100,
     "stretch_goal": 3,
     "items": 3,
     "shirts": [
@@ -172,7 +172,7 @@ JSON_INVALID_LANG = {
 }
 
 JSON_VALID_LANG = {
-    "donation": 35,
+    "donation": 100,
     "stretch_goal": 3,
     "items": 3,
     "shirts": [

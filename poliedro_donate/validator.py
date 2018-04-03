@@ -10,9 +10,9 @@ from poliedro_donate import strings
 
 STRETCH_GOAL_PRICES = {
     0: 0.0,
-    1: 2.0,
-    2: 5.0,
-    3: 10.0
+    1: 4.0,
+    2: 8.0,
+    3: 12.0
 }
 
 SHIRT_TYPES = ("tank-top", "t-shirt")
