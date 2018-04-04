@@ -76,10 +76,12 @@ def create_payment():
         # Store transaction into database
         database.add_transaction_details(donation, payment.id, body)
 
-        return jsonify({
+        response = jsonify({
             "payment_id": payment.id,
             "donation_id": donation.pretty_id
         })
+        response.status_code = payment_create_response.status_code
+        return response
 
     except Exception as e:
         raise DonationError(donation, e)
@@ -166,7 +168,9 @@ def execute_payment():
                     donation.pretty_id)
             }
 
-        return jsonify(rjson)
+        response = jsonify(rjson)
+        response.status_code = r.status_code
+        return response
 
     except Exception as e:
         raise DonationError(donation, e)
