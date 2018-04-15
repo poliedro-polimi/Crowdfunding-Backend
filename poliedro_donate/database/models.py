@@ -31,9 +31,9 @@ class Shirt(db.Model):
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    payment_id = db.Column(db.String(30), nullable=True)
-    payer_id = db.Column(db.String(30), nullable=True)
-    state = db.Column(db.String(15), nullable=True)
+    payment_id = db.Column(db.String(50), nullable=True)
+    payer_id = db.Column(db.String(50), nullable=True)
+    state = db.Column(db.String(30), nullable=True)
     payment_obj = db.Column(db.Text, nullable=True)
     result_obj = db.Column(db.Text, nullable=True)
 
