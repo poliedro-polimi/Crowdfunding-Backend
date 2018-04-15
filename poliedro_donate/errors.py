@@ -41,7 +41,7 @@ def handle_paypal_error(error):
 
     jerr = json.loads(error.message)
 
-    if error.status_code == 403:
+    if error.status_code in (400, 403):
         ejson = {"error": {
             "type": jerr["name"],
             "message": jerr["message"]
