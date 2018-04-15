@@ -9,6 +9,7 @@ class DefaultConfig(object):
     PAYPAL_CLIENT_SECRET = ""
     PAYPAL_API_URL = paypalrestsdk.core.PayPalEnvironment.SANDBOX_API_URL
     PAYPAL_WEB_URL = paypalrestsdk.core.PayPalEnvironment.SANDBOX_WEB_URL
+    PAYPAL_WEB_EXPERIENCE_PROFILE_ID = None
     APP_DOMAIN = "poliedropolimi.pythonanywhere.com"
     APP_SSL = True
     APP_SSL_AGE = 300

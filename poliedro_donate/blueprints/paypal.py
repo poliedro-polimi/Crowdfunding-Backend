@@ -65,6 +65,9 @@ def create_payment():
             },
         }
 
+        if app.config.get("PAYPAL_WEB_EXPERIENCE_PROFILE_ID", None):
+            body["experience_profile_id"] = app.config["PAYPAL_WEB_EXPERIENCE_PROFILE_ID"]
+
         payment_create_request = payments.PaymentCreateRequest()
         payment_create_request.request_body(body)
 
