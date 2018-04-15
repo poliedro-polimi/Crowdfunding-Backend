@@ -1,11 +1,13 @@
 from __future__ import print_function
 
+import json
 import sys, traceback
 import warnings
 import braintreehttp
 from flask import request, jsonify, url_for, g, Blueprint
 
 from .. import app, strings, database, mail
+from ..database import db
 from ..database.models import Transaction
 from ..validator import validate_donation_request, validate_execute_request
 from ..paypal import pp_client
@@ -118,6 +120,11 @@ def execute_payment():
                 raise braintreehttp.http_error.HttpError(r.text, r.status_code, r.headers)
         except IOError as ioe:
             ioe.body = body
+            if isinstance(ioe, braintreehttp.http_error.HttpError):
+                donation.transaction.state = json.loads(ioe.message)["name"]
+            else:
+                donation.transaction.state = str(ioe.__class__.__name__)
+            db.session.commit()
             raise
 
         jresult = r.json()
