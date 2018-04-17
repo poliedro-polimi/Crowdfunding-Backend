@@ -7,6 +7,8 @@ from flask import jsonify
 
 from . import app
 
+WHITELISTED_PAYPAL_ERRORS_CODES = (400, 403)
+
 
 class DonationError(Exception):
     def __init__(self, donation, parent_exc=None):
@@ -41,7 +43,7 @@ def handle_paypal_error(error):
 
     jerr = json.loads(error.message)
 
-    if error.status_code in (400, 403):
+    if error.status_code in WHITELISTED_PAYPAL_ERRORS_CODES:
         ejson = {"error": {
             "type": jerr["name"],
             "message": jerr["message"]
@@ -57,8 +59,8 @@ def handle_paypal_error(error):
 
     response = jsonify(ejson)
 
-    if error.status_code == 403:
-        response.status_code = 403
+    if error.status_code in WHITELISTED_PAYPAL_ERRORS_CODES:
+        response.status_code = error.status_code
     else:
         # https://pics.me.me/502-bad-gateway-nginx-0-7-67-502-bad-gateway-4364222.png
         response.status_code = 502
