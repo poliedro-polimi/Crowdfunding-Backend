@@ -123,7 +123,7 @@ def execute_payment():
                 raise braintreehttp.http_error.HttpError(r.text, r.status_code, r.headers)
         except IOError as ioe:
             ioe.body = body
-            if isinstance(ioe, braintreehttp.http_error.HttpError):
+            if isinstance(ioe, braintreehttp.http_error.HttpError) and json.loads(ioe.message).get("name"):
                 donation.transaction.state = json.loads(ioe.message)["name"]
             else:
                 donation.transaction.state = str(ioe.__class__.__name__)
