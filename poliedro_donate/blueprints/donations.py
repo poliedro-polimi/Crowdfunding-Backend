@@ -20,7 +20,8 @@ def list_all():
 
     total = 0
     for donation in d:
-        total += donation.amount
+        if donation.transaction.state == 'approved':
+            total += donation.amount
 
     return render_template('donations/list_all.html', donations=d, total=total)
 
