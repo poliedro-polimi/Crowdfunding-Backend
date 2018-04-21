@@ -4,7 +4,7 @@ from collections import OrderedDict
 from werkzeug.exceptions import NotFound
 from flask import Blueprint, render_template
 
-from .. import strings
+from .. import strings, app
 from ..auth import requires_auth
 from ..database import helpers
 from ..database.models import Donation, User, Transaction
@@ -16,14 +16,16 @@ donations_bp = Blueprint('donations', __name__)
 @donations_bp.route('/')
 @requires_auth
 def list_all():
+    costs = 0
     d = Donation.query.all()
 
     total = 0
     for donation in d:
         if donation.transaction.state == 'approved':
             total += donation.amount
+            costs += app.config["APP_SG_COSTS"][donation.stretch_goal] * donation.items
 
-    return render_template('donations/list_all.html', donations=d, total=total)
+    return render_template('donations/list_all.html', donations=d, total=total, costs=costs, remaining=total-costs)
 
 
 @donations_bp.route('/D<int:d_id>T<int:t_id>')

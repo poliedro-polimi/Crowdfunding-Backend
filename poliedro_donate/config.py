@@ -17,6 +17,12 @@ class DefaultConfig(object):
     APP_MAILER = "mailgun"
     APP_MAILER_FROM = ""
     APP_MAX_STRETCH_GOAL = 3
+    APP_SG_COSTS = {
+        0: 0,
+        1: 1,
+        2: 2,
+        3: 3
+    }
     MAILGUN_API_KEY = ""
     MAILGUN_DOMAIN = ""
     APP_ENABLE_CORS = True
