@@ -20,12 +20,14 @@ def list_all():
     d = Donation.query.all()
 
     total = 0
+    fees = 0
     for donation in d:
         if donation.transaction.state == 'approved':
             total += donation.amount
             costs += app.config["APP_SG_COSTS"][donation.stretch_goal] * donation.items
+            fees += app.config.get("PAYPAL_STATIC_FEE", 0) + donation.amount * app.config.get("PAYPAL_FEE", 0)
 
-    return render_template('donations/list_all.html', donations=d, total=total, costs=costs, remaining=total-costs)
+    return render_template('donations/list_all.html', donations=d, total=total, costs=costs, fees=fees, remaining=total-costs-fees)
 
 
 @donations_bp.route('/D<int:d_id>T<int:t_id>')

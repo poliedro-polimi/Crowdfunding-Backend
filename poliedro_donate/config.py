@@ -23,6 +23,8 @@ class DefaultConfig(object):
         2: 2,
         3: 3
     }
+    PAYPAL_FIXED_FEE = 0.35
+    PAYPAL_FEE = 3.4/100
     MAILGUN_API_KEY = ""
     MAILGUN_DOMAIN = ""
     APP_ENABLE_CORS = True
