@@ -27,7 +27,13 @@ def list_all():
             costs += app.config["APP_SG_COSTS"][donation.stretch_goal] * donation.items
             fees += app.config.get("PAYPAL_STATIC_FEE", 0) + donation.amount * app.config.get("PAYPAL_FEE", 0)
 
-    return render_template('donations/list_all.html', donations=d, total=total, costs=costs, fees=fees, remaining=total-costs-fees)
+    remaining = total - costs - fees
+    total, costs, fees, remaining = round(total, 2), round(costs, 2), round(fees, 2), round(remaining, 2)
+    total, costs, fees, remaining = "{:0.2f}".format(total), "{:0.2f}".format(costs), "{:0.2f}".format(
+        fees), "{:0.2f}".format(remaining),
+
+    return render_template('donations/list_all.html', donations=d, total=total, costs=costs, fees=fees,
+                           remaining=remaining)
 
 
 @donations_bp.route('/D<int:d_id>T<int:t_id>')
