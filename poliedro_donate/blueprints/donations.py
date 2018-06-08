@@ -1,8 +1,10 @@
+from poliedro_donate.database import commit_on_success
+
 __all__ = ('donations_bp', 'donation')
 
 from collections import OrderedDict
 from werkzeug.exceptions import NotFound
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for
 
 from .. import strings, app
 from ..auth import requires_auth
@@ -42,6 +44,30 @@ def list_all():
 def donation(d_id, t_id):
     d = Donation.query.filter_by(id=d_id, transaction_id=t_id).first_or_404()
     return render_template('donations/donation.html', donation=d, dbhelpers=helpers, strings=strings)
+
+
+@donations_bp.route('/D<int:d_id>T<int:t_id>/approve')
+@donations_bp.route('/D<int:d_id>T<int:t_id>/approve/')
+@requires_auth
+@commit_on_success
+def donation_approve(d_id, t_id):
+    t = Transaction.query.filter_by(id=t_id).first_or_404()
+    t.state = "approved"
+    t.payment_obj = '"Manually approved"'
+    t.result_obj = '"Manually approved"'
+    return redirect(url_for('donations.donation', d_id=d_id, t_id=t_id))
+
+
+@donations_bp.route('/D<int:d_id>T<int:t_id>/disapprove')
+@donations_bp.route('/D<int:d_id>T<int:t_id>/disapprove/')
+@requires_auth
+@commit_on_success
+def donation_disapprove(d_id, t_id):
+    t = Transaction.query.filter_by(id=t_id).first_or_404()
+    t.state = "disapproved"
+    t.payment_obj = '"Manually disapproved"'
+    t.result_obj = '"Manually disapproved"'
+    return redirect(url_for('donations.donation', d_id=d_id, t_id=t_id))
 
 
 @donations_bp.route('/reference/<int:r_id>')

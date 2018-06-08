@@ -19,7 +19,8 @@
         <ul>
             <li><strong>ID</strong>: {{ donation.pretty_id }}</li>
             <li><strong>Amount</strong>: &euro;{{ donation.amount }}</li>
-            <li><strong>Stretch goal</strong>: {{ donation.stretch_goal }} - <i>{{ strings.STRETCH_GOAL_NAMES['en'][donation.stretch_goal] }}</i></li>
+            <li><strong>Stretch goal</strong>: {{ donation.stretch_goal }} -
+                <i>{{ strings.STRETCH_GOAL_NAMES['en'][donation.stretch_goal] }}</i></li>
             <li><strong>Items</strong>: {{ donation.items }}</li>
             <li><strong>Notes</strong>: {{ donation.notes }}</li>
         </ul>
@@ -39,6 +40,13 @@
     {% if donation.transaction %}
         <div>
             <h2>Associated transaction</h2>
+            <div>
+                {% if donation.transaction.state != "approved" %}
+                    <a href="{{ url_for("donations.donation_approve", d_id=donation.id, t_id=donation.transaction_id) }}">Mark as approved</a>
+                {% else %}
+                    <a href="{{ url_for("donations.donation_disapprove", d_id=donation.id, t_id=donation.transaction_id) }}">Mark as not approved</a>
+                {% endif %}
+            </div>
             <ul>
                 <li><strong>Payment ID</strong>: {{ donation.transaction.payment_id }}</li>
                 <li><strong>Payer ID</strong>: {{ donation.transaction.payer_id }}</li>
@@ -54,7 +62,6 @@
                     </li>
                 {% endif %}
             </ul>
-
         </div>
     {% endif %}
 
