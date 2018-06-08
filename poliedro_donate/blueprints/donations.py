@@ -88,7 +88,7 @@ def by_location(location):
     refs = User.query.filter_by(location=location).order_by(User.lastname).all()
     donation_sort_key = lambda d: d.id
     return render_template('donations/by_location.html', refs=refs, location=location,
-                           donation_sort_key=donation_sort_key, dbhelpers=helpers, strings=strings)
+                           donation_sort_key=donation_sort_key, dbhelpers=helpers, strings=strings, sum=sum)
 
 
 @donations_bp.route('/by_location/<location>/labels')

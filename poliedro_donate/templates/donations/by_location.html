@@ -62,7 +62,7 @@
                                     {% for t, sizes in shirts.items() %}
                                         <td colspan="4">
 
-                                            <div>{{ strings.HR_SHIRT_TYPES['en'][t] }}</div>
+                                            <div>{% if sum(sizes.values()) != 0 %}{{ strings.HR_SHIRT_TYPES['en'][t] }}{% endif %}</div>
                                             <div>
                                                 <ul>
                                                     {% for s, count in sizes.items() %}
