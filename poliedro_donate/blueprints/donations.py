@@ -91,6 +91,21 @@ def by_location(location):
                            donation_sort_key=donation_sort_key, dbhelpers=helpers, strings=strings, sum=sum)
 
 
+@donations_bp.route('/by_location/<location>.md')
+@requires_auth
+def location_markdown(location):
+    if location not in LOCATIONS:
+        raise NotFound()
+
+    d = Donation.query\
+        .join(Donation.reference)\
+        .filter(User.location == location)\
+        .group_by(Donation)\
+        .order_by(Donation.id)\
+        .all()
+    return render_template('donations/by_location.md', donations=d, location=location)
+
+
 @donations_bp.route('/by_location/<location>/labels')
 @donations_bp.route('/by_location/<location>/labels/')
 @requires_auth
