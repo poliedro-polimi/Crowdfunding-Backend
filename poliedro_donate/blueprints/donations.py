@@ -102,6 +102,9 @@ def location_markdown(location):
         .filter(User.location == location)\
         .group_by(Donation)\
         .order_by(Donation.id)\
+        .join(Donation.transaction)\
+        .filter(Transaction.state == 'approved')\
+        .group_by(Donation)\
         .all()
     resp = make_response(render_template('donations/by_location.md', donations=d, location=location))
     resp.headers['Content-type'] = 'text/plain; charset=utf-8'
