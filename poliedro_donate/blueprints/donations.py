@@ -104,7 +104,7 @@ def location_markdown(location):
         .order_by(Donation.id)\
         .all()
     resp = make_response(render_template('donations/by_location.md', donations=d, location=location))
-    resp.headers['Content-type'] = 'text/markdown; charset=utf-8'
+    resp.headers['Content-type'] = 'text/plain; charset=utf-8'
     return resp
 
 
