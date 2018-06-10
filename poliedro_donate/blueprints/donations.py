@@ -4,7 +4,7 @@ __all__ = ('donations_bp', 'donation')
 
 from collections import OrderedDict
 from werkzeug.exceptions import NotFound
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, make_response
 
 from .. import strings, app
 from ..auth import requires_auth
@@ -103,7 +103,9 @@ def location_markdown(location):
         .group_by(Donation)\
         .order_by(Donation.id)\
         .all()
-    return render_template('donations/by_location.md', donations=d, location=location)
+    resp = make_response(render_template('donations/by_location.md', donations=d, location=location))
+    resp.headers['Content-type'] = 'text/markdown; charset=utf-8'
+    return resp
 
 
 @donations_bp.route('/by_location/<location>/labels')
