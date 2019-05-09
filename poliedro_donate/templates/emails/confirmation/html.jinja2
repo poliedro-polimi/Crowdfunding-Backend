@@ -65,7 +65,7 @@
         <li><b>{{ _("Quantity") }}:</b> {{ donation.items }}</li>
         <li><b>{{ _("Pick up campus") }}:</b> {{ donation.reference.location.capitalize() }}</li>
     </ul>
-    {% if donation.stretch_goal == 3 and donation.items > 0 %}
+    {% if donation.stretch_goal == 2 and donation.items > 0 %}
         {% include 'shirts_table.html' %}
     {% endif %}
     <p>

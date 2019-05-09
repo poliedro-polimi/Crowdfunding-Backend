@@ -136,7 +136,7 @@ def to_order():
         if transaction.donation.stretch_goal > 0:
             stretch_goals[transaction.donation.stretch_goal] += transaction.donation.items
 
-        if transaction.donation.stretch_goal == 3:
+        if transaction.donation.stretch_goal == 2:
             shirts += transaction.donation.shirts
 
     # Count gadgets for each stretch goal

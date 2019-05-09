@@ -22,16 +22,14 @@ PP_ITEM_DESC = lambda lang, stretch_goal, qty: \
 STRETCH_GOAL_NAMES = {
     "it": {
         0: "(nessuno)",
-        1: "Sacca PoliMi Pride",
-        2: "Sacca, spillette e adesivi PoliMi Pride",
-        3: "Kit completo PoliMi Pride - sacca, splillette, adesivi, maglietta/canotta"
+        1: "Sacca, spillette, bracciale e tira lampo PoliMi Pride",
+        2: "Kit completo PoliMi Pride - sacca, spillette, bracciale, tira lampo, maglietta/canotta"
     },
 
     "en": {
         0: "(none)",
-        1: "PoliMi Pride sackpack",
-        2: "PoliMi Pride sackpack, pins and stickers",
-        3: "PoliMi Pride Full Kit - sackpack, pins, stickers, t-shirt/tank top"
+        1: "PoliMi Pride sackpack, pins, rainbow band and puller",
+        2: "PoliMi Pride Full Kit - sackpack, pins, band, puller, t-shirt/tank top"
     }
 }
 

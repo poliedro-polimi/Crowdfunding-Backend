@@ -8,7 +8,7 @@ JSON_SG0_GOOD = {
 }
 
 JSON_SG1_GOOD = {
-    "donation": 10,
+    "donation": 14,
     "stretch_goal": 1,
     "items": 2,
     "notes": "",
@@ -23,7 +23,7 @@ JSON_SG1_GOOD = {
 
 JSON_SG2_GOOD = {
     "donation": 50,
-    "stretch_goal": 2,
+    "stretch_goal": 1,
     "items": 3,
     "notes": "",
     "reference": {
@@ -37,7 +37,7 @@ JSON_SG2_GOOD = {
 
 JSON_SG3_GOOD = {
     "donation": 100,
-    "stretch_goal": 3,
+    "stretch_goal": 2,
     "items": 3,
     "shirts": [
         {"size": "XS", "type": "tank-top"},
@@ -56,7 +56,7 @@ JSON_SG3_GOOD = {
 
 JSON_NOTCOVERED = {
     "donation": 1,
-    "stretch_goal": 2,
+    "stretch_goal": 1,
     "items": 2,
     "notes": "",
     "reference": {
@@ -84,7 +84,7 @@ JSON_INVALID_STRETCH_GOAL = {
 
 JSON_SG3_SHIRTS_ITEMS_MISMATCH = {
     "donation": 100,
-    "stretch_goal": 3,
+    "stretch_goal": 2,
     "items": 5,
     "shirts": [
         {"size": "XS", "type": "tank-top"},
@@ -103,7 +103,7 @@ JSON_SG3_SHIRTS_ITEMS_MISMATCH = {
 
 JSON_SG3_SHIRTS_MISSING = {
     "donation": 500,
-    "stretch_goal": 3,
+    "stretch_goal": 2,
     "items": 5,
     "notes": "",
     "reference": {
@@ -153,7 +153,7 @@ JSON_STRETCH_GOAL_MISSING = {
 
 JSON_INVALID_LANG = {
     "donation": 100,
-    "stretch_goal": 3,
+    "stretch_goal": 2,
     "items": 3,
     "shirts": [
         {"size": "XS", "type": "tank-top"},
@@ -173,7 +173,7 @@ JSON_INVALID_LANG = {
 
 JSON_VALID_LANG = {
     "donation": 100,
-    "stretch_goal": 3,
+    "stretch_goal": 2,
     "items": 3,
     "shirts": [
         {"size": "XS", "type": "tank-top"},
@@ -379,7 +379,7 @@ def _random_string():
 def gen_donation_jsons(n=50):
     import random
     for i in range(n):
-        sg = random.randint(0, 3)
+        sg = random.randint(0, 2)
         d = globals()["JSON_SG{}_GOOD".format(sg)].copy()
 
         for key in d:

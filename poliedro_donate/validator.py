@@ -10,9 +10,8 @@ from poliedro_donate import strings
 
 STRETCH_GOAL_PRICES = {
     0: 0.0,
-    1: 4.0,
-    2: 6.0,
-    3: 12.0
+    1: 7.0,
+    2: 13.0
 }
 
 SHIRT_TYPES = ("tank-top", "t-shirt")
@@ -62,7 +61,7 @@ def validate_donation_request(req):
         validate_lang(req["lang"])
     if req["stretch_goal"] > 0 or "reference" in req:
         validate_reference(req["reference"])
-    if req["stretch_goal"] >= 3:
+    if req["stretch_goal"] >= 2:
         if len(req["shirts"]) != req["items"]:
             raise ValueError("Shirts quantity and item quantity don't match")
         validate_shirts(req["shirts"])
