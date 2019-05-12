@@ -53,7 +53,7 @@ class Donation(db.Model):
 
     @property
     def pretty_id(self):
-        donation_id = "#D{}".format(self.id)
+        donation_id = "#2019D{}".format(self.id)
 
         if self.transaction:
             donation_id = "{}T{}".format(donation_id, self.transaction.id)
