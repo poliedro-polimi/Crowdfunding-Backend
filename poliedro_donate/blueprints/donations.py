@@ -27,7 +27,7 @@ def list_all():
         if donation.transaction.state == 'approved':
             total += donation.amount
             costs += app.config["APP_SG_COSTS"][donation.stretch_goal] * donation.items
-            fees += app.config.get("PAYPAL_STATIC_FEE", 0) + donation.amount * app.config.get("PAYPAL_FEE", 0)
+            fees += float(json.loads(donation.transaction.result_obj).transactions[0].related_resources[0].sale.transaction_fee.value)
 
     remaining = total - costs - fees
     total, costs, fees, remaining = round(total, 2), round(costs, 2), round(fees, 2), round(remaining, 2)
