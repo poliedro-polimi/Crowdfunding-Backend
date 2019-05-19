@@ -2,7 +2,6 @@ from poliedro_donate.database import commit_on_success
 
 __all__ = ('donations_bp', 'donation')
 
-import json
 from collections import OrderedDict
 from werkzeug.exceptions import NotFound
 from flask import Blueprint, render_template, redirect, url_for, make_response
@@ -12,6 +11,8 @@ from ..auth import requires_auth
 from ..database import helpers
 from ..database.models import Donation, User, Transaction
 from ..validator import LOCATIONS, STRETCH_GOAL_PRICES
+
+import json
 
 donations_bp = Blueprint('donations', __name__)
 
