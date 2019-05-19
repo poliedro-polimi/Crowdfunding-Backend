@@ -2,6 +2,7 @@ from poliedro_donate.database import commit_on_success
 
 __all__ = ('donations_bp', 'donation')
 
+import json
 from collections import OrderedDict
 from werkzeug.exceptions import NotFound
 from flask import Blueprint, render_template, redirect, url_for, make_response
